@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class BrowserhookActivity extends Activity {
+	//ブラウザの選択どうすっかね。
 	//表示するアイテム群
 	private static final String[][] converters = new String[][] {
 		{
