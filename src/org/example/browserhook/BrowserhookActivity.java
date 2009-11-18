@@ -16,14 +16,20 @@ public class BrowserhookActivity extends Activity {
 	//表示するアイテム群
 	private static final String[][] converters = new String[][] {
 		{
-			"pc2m+Browser",
+			"pc2m+Dolphin",
 			"http://rg0020.ddo.jp/p?_k_v=2&_k_c=100&_k_u=",
-			"com.android.browser",
-			"com.android.browser.BrowserActivity"
+			"com.mgeek.android.DolphinBrowser",
+			"com.mgeek.android.DolphinBrowser.BrowserActivity"
 		},
 		{
 			"* direct *",
 			"",
+			"com.android.browser",
+			"com.android.browser.BrowserActivity"
+		},
+		{
+			"pc2m+Browser",
+			"http://rg0020.ddo.jp/p?_k_v=2&_k_c=100&_k_u=",
 			"com.android.browser",
 			"com.android.browser.BrowserActivity"
 		},
@@ -61,8 +67,8 @@ public class BrowserhookActivity extends Activity {
 		Log.d(TAG, "intent:got");
 
 		//disp main layout
-		setContentView(R.layout.main);
-		Log.d(TAG, "layout:done");
+		//setContentView(R.layout.main);
+		//Log.d(TAG, "layout:done");
 		
 		//ask convert pattern
 		selectDialog();
@@ -94,6 +100,7 @@ public class BrowserhookActivity extends Activity {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				/* Cancel ボタンをクリックした時の処理 */
 				dialog.dismiss();
+				Log.d(TAG, "cancelled");
 				finish();
 				return;
 			}
@@ -118,6 +125,7 @@ public class BrowserhookActivity extends Activity {
 		intent.setComponent(comp);
 		startActivity(intent);
 		finish();
+		Log.d(TAG, "successfully launch browser.");
 		return;
 	}
 
