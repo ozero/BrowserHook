@@ -12,8 +12,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class BrowserhookActivity extends Activity {
-	//ƒuƒ‰ƒEƒU‚Ì‘I‘ğ‚Ç‚¤‚·‚Á‚©‚ËB
-	//•\¦‚·‚éƒAƒCƒeƒ€ŒQ
+	//ãƒ–ãƒ©ã‚¦ã‚¶ã®é¸æŠã©ã†ã™ã£ã‹ã­ã€‚
+	//è¡¨ç¤ºã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ç¾¤
 	private static final String[][] converters = new String[][] {
 		{
 			"pc2m+Browser",
@@ -69,19 +69,19 @@ public class BrowserhookActivity extends Activity {
 		return;
 	}
 	
-	//‘I‘ğˆ‚ğ•\¦
+	//é¸æŠè‚¢ã‚’è¡¨ç¤º
 	private void selectDialog() {
 		ArrayList<String> items_src = new ArrayList<String>();
 		Log.d(TAG, "init:dialog");
 		
-		//‘I‘ğƒ_ƒCƒAƒƒO—p‚Ì‘I‘ğˆˆê——‚ğ¶¬
+		//é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ç”¨ã®é¸æŠè‚¢ä¸€è¦§ã‚’ç”Ÿæˆ
 		for (String[] tmp : converters){
 			items_src.add(tmp[0]);
 		}
 		Log.d(TAG, "init:dialog:items:done");
 		String[] items = (String[])items_src.toArray(new String[0]);
 		
-		//‘I‘ğƒ_ƒCƒAƒƒO‚ğ•\¦
+		//é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤º
 		Builder dialog = new AlertDialog.Builder(this);
 		dialog.setTitle("Choose your browser");
 		dialog.setSingleChoiceItems(items, 0,
@@ -92,7 +92,7 @@ public class BrowserhookActivity extends Activity {
 		});
 		dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-				/* Cancel ƒ{ƒ^ƒ“‚ğƒNƒŠƒbƒN‚µ‚½‚Ìˆ— */
+				/* Cancel ãƒœã‚¿ãƒ³ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ãŸæ™‚ã®å‡¦ç† */
 				dialog.dismiss();
 				finish();
 				return;
@@ -103,7 +103,7 @@ public class BrowserhookActivity extends Activity {
 		return;
 	}
 	
-	//‘I‘ğˆ‚ğˆ—
+	//é¸æŠè‚¢ã‚’å‡¦ç†
 	private void openBrowser(int which) {
 		String[] item = converters[which];
 				
