@@ -16,10 +16,10 @@ public class BrowserhookActivity extends Activity {
 	//表示するアイテム群
 	private static final String[][] converters = new String[][] {
 		{
-			"pc2m+Dolphin",
-			"http://rg0020.ddo.jp/p?_k_v=2&_k_c=100&_k_u=",
-			"com.mgeek.android.DolphinBrowser",
-			"com.mgeek.android.DolphinBrowser.BrowserActivity"
+			"GWT+Browser",
+			"http://www.google.co.jp/gwt/x?btnGo=Go&source=wax&ie=UTF-8&oe=UTF-8&u=",
+			"com.android.browser",
+			"com.android.browser.BrowserActivity"
 		},
 		{
 			"* direct *",
@@ -28,23 +28,23 @@ public class BrowserhookActivity extends Activity {
 			"com.android.browser.BrowserActivity"
 		},
 		{
+			"bing+Browser",
+			"http://d2c.infogin.com/ja-jp/lnk000/=",
+			"com.android.browser",
+			"com.android.browser.BrowserActivity"
+		},
+		{
+			"pc2m+Dolphin",
+			"http://rg0020.ddo.jp/p?_k_v=2&_k_c=100&_k_u=",
+			"com.mgeek.android.DolphinBrowser",
+			"com.mgeek.android.DolphinBrowser.BrowserActivity"
+		},
+		{
 			"pc2m+Browser",
 			"http://rg0020.ddo.jp/p?_k_v=2&_k_c=100&_k_u=",
 			"com.android.browser",
 			"com.android.browser.BrowserActivity"
 		},
-		{
-			"GWT+Browser",
-			"http://www.google.co.jp/gwt/x?btnGo=Go&source=wax&ie=UTF-8&oe=UTF-8&u=",
-			"com.android.browser",
-			"com.android.browser.BrowserActivity"
-		},
-		{
-			"bing+Browser",
-			"http://d2c.infogin.com/ja-jp/lnk000/=",
-			"com.android.browser",
-			"com.android.browser.BrowserActivity"
-		}
 
 	};
 	Uri uri = null;
