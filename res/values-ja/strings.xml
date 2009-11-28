@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">ok.</string>
+    <string name="app_name">BrowserHook</string>
+<string name="TextViewNAME">アイテム名</string>
+<string name="TextViewURL">変換URL</string>
+<string name="TextViewAPP">URLを開くブラウザ名</string>
+<string name="TextViewACTV">インテントを受取るアクティビティ</string>
+<string name="ButtonOK">この内容で保存</string>
+<string name="ButtonCancel">キャンセル</string>
+
+</resources>

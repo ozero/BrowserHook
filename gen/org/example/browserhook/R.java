@@ -13,10 +13,30 @@ public final class R {
     public static final class drawable {
         public static final int icon=0x7f020000;
     }
+    public static final class id {
+        public static final int ButtonCancel=0x7f05000a;
+        public static final int ButtonOK=0x7f050009;
+        public static final int EditTextACTV=0x7f050008;
+        public static final int EditTextAPP=0x7f050006;
+        public static final int EditTextNAME=0x7f050002;
+        public static final int EditTextURL=0x7f050004;
+        public static final int TextViewACTV=0x7f050007;
+        public static final int TextViewAPP=0x7f050005;
+        public static final int TextViewNAME=0x7f050001;
+        public static final int TextViewURL=0x7f050003;
+        public static final int listview=0x7f050000;
+    }
     public static final class layout {
         public static final int main=0x7f030000;
+        public static final int settingeditor=0x7f030001;
     }
     public static final class string {
+        public static final int ButtonCancel=0x7f040007;
+        public static final int ButtonOK=0x7f040006;
+        public static final int TextViewACTV=0x7f040005;
+        public static final int TextViewAPP=0x7f040004;
+        public static final int TextViewNAME=0x7f040002;
+        public static final int TextViewURL=0x7f040003;
         public static final int app_name=0x7f040001;
         public static final int hello=0x7f040000;
     }
