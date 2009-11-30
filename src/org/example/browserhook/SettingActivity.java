@@ -57,10 +57,10 @@ public class SettingActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getGroupId()) {
 		case 0:
-			conv.cssave();
+			conv.csaveSD();
 			return true;
 		case 1:
-			conv.csload();
+			conv.cloadSD();
 			return true;
 		case 2:
 			conv.cinit(1);//init --force
