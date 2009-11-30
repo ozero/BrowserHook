@@ -1,7 +1,6 @@
 package org.example.browserhook;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,19 +20,12 @@ public class SettingActivity extends Activity {
 	String TAG = "bh:sa";
 	Converter conv = new Converter();
 
-	// todo: import/export/init menu gui
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		Log.d(TAG, "onCreate");
 		// start
 		super.onCreate(savedInstanceState);
-
-		// ask to init data file on initial boot
-		if (conv.cchk() > 0) {
-			conv.cinit();
-		}
 
 		// disp main layout
 		setContentView(R.layout.main);
@@ -63,10 +55,6 @@ public class SettingActivity extends Activity {
 	// //////////////////////////////////////////////////////////////////////
 
 	public boolean onOptionsItemSelected(MenuItem item) {
-		String itemid = Integer.toString(item.getItemId());
-		String title = item.getTitle().toString();
-		showAlertDialog("項目のID = " + itemid + "\n" + "タイトル= " + title);
-		
 		switch (item.getGroupId()) {
 		case 0:
 			conv.cssave();
@@ -75,16 +63,11 @@ public class SettingActivity extends Activity {
 			conv.csload();
 			return true;
 		case 2:
-			conv.cinit();
+			conv.cinit(1);//init --force
 			dispSetting();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	private void showAlertDialog(String message) {
-		new AlertDialog.Builder(this).setTitle("選択された項目").setMessage(message)
-				.setPositiveButton("閉じる", null).show();
 	}
 
 	// 設定画面を表示

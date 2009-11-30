@@ -40,10 +40,10 @@ public class BrowserhookActivity extends Activity {
 			dispSelectDialog();
 			
 		}else{
-			// no none, disp setting
+			// or none, display setting
 			//setContentView(R.layout.main);
 			
-			//disp setting
+			//display setting
 			startSettingActivity();
 			finish();
 		}
@@ -89,7 +89,7 @@ public class BrowserhookActivity extends Activity {
 	private void openBrowser(int which) {
 		String[] item = conv.getConverter(which);
 		
-		// modifi intent
+		// modify intent
 		Log.d(TAG, "urlsrc:" + uri);
 		uri = Uri.parse(item[1] + uri.toString());
 		Log.d(TAG, "urlmod:" + uri);

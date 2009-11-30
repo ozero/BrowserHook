@@ -3,30 +3,22 @@ package org.example.browserhook;
 import java.util.ArrayList;
 import android.util.Log;
 
-public class Converter {
-	private static String[][] converters = new String[][] {
-			{
-					"GWT+Browser",
-					"http://www.google.co.jp/gwt/x?btnGo=Go&source=wax&ie=UTF-8&oe=UTF-8&u=",
-					"com.android.browser",
-					"com.android.browser.BrowserActivity" },
-			{ "* direct *", "", "com.android.browser",
-					"com.android.browser.BrowserActivity" },
-			{ "bing+Browser", "http://d2c.infogin.com/ja-jp/lnk000/=",
-					"com.android.browser",
-					"com.android.browser.BrowserActivity" },
-			{ "pc2m+Dolphin", "http://rg0020.ddo.jp/p?_k_v=2&_k_c=100&_k_u=",
-					"com.mgeek.android.DolphinBrowser",
-					"com.mgeek.android.DolphinBrowser.BrowserActivity" },
-			{ "pc2m+Browser", "http://rg0020.ddo.jp/p?_k_v=2&_k_c=100&_k_u=",
-					"com.android.browser",
-					"com.android.browser.BrowserActivity" },
 
-	};
+/*
+ * 変換候補の保持、およびload/save/import/export/init担当
+ * 
+ * */
+
+public class Converter {
+	private static String[][] converters;
 	String TAG = "BrowserHook";
 	
 	//constructor
 	public Converter(){
+		// データファイルがなければ初期化する
+		if (cchk() > 0) {
+			cinit(0);
+		}
 		cload();
 		return;
 	}
@@ -70,20 +62,57 @@ public class Converter {
 		return item;
 	}
 	
+	//todo: 内蔵ストレージから読み出し
+	private void cload(){
+		//todo: rplace stub code.
+		converters =  new String[][] {
+			{
+				"GWT+Browser",
+				"http://www.google.co.jp/gwt/x?btnGo=Go&source=wax&ie=UTF-8&oe=UTF-8&u=",
+				"com.android.browser",
+				"com.android.browser.BrowserActivity" },
+			{ "* direct *", "", "com.android.browser",
+					"com.android.browser.BrowserActivity" },
+			{ "bing+Browser", "http://d2c.infogin.com/ja-jp/lnk000/=",
+					"com.android.browser",
+					"com.android.browser.BrowserActivity" },
+			{ "pc2m+Dolphin", "http://rg0020.ddo.jp/p?_k_v=2&_k_c=100&_k_u=",
+					"com.mgeek.android.DolphinBrowser",
+					"com.mgeek.android.DolphinBrowser.BrowserActivity" },
+			{ "pc2m+Browser", "http://rg0020.ddo.jp/p?_k_v=2&_k_c=100&_k_u=",
+					"com.android.browser",
+					"com.android.browser.BrowserActivity" },
+
+		};
+		return;
+	}
+	
 	//todo: 内蔵ストレージファイルの有無確認
 	public int cchk(){
 		int retval = 0;
 		return retval;
 	}
 	
-	//todo: 内蔵ストレージから読み出し
-	private void cload(){}
+
+	//todo: 内蔵ストレージファイルの初期化
+	public void cinit(int force){
+		if (force == 1){
+			//無理やり初期化する
+			
+		}else{
+			//ファイルがあるかどうか確認
+			
+			
+			//なければ初期状態で上書き。
+			
+		}
+		return;
+	}
 	
 	//todo: 内蔵ストレージに保存
-	private void csave(){}
-	
-	//todo: 内蔵ストレージファイルの初期化
-	public void cinit(){}
+	private void csave(){
+		return;
+	}
 	
 	//todo: sdcardからimport
 	public void csload(){}
