@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">ok.</string>
+    <string name="app_name">BrowserHook</string>
+<string name="TextViewNAME">name</string>
+<string name="TextViewURL">convert gateway url</string>
+<string name="TextViewAPP">App name to open URL</string>
+<string name="TextViewACTV">Activity to receive intent</string>
+<string name="ButtonOK">Save</string>
+<string name="ButtonCancel">Cancel</string>
+
+</resources>
