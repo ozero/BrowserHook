@@ -1,11 +1,13 @@
 package org.example.browserhook;
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,15 +22,21 @@ import org.example.browserhook.Converter;
  * */
 
 public class BrowserhookActivity extends Activity {
+	SharedPreferences sp;
 	Uri uri = null;
-	String TAG = "bh:bha";
-	Converter conv = new Converter();
-
+	String TAG = "bh";
+	static String spkey = "convkey";
+	Converter conv;
+	public static final String FILENAME = "preference";
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// start
 		super.onCreate(savedInstanceState);
+		sp = getSharedPreferences(BrowserhookActivity.FILENAME, MODE_PRIVATE);
+		conv = new Converter();
+		convLoad();
 		
 		//check for intent
 		if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
@@ -52,6 +60,18 @@ public class BrowserhookActivity extends Activity {
 	}
 	
 	
+	
+	
+	// //////////////////////////////////////////////////////////////////////
+	
+	//sharedprefを読んでconvに設定
+	private void convLoad() {
+		Log.d(TAG, "convLoad()");
+		//TODO:fill stub
+		//sp = getSharedPreferences(BrowserhookActivity.FILENAME, MODE_PRIVATE);
+		//conv.deserialize(sp.getString(BrowserhookActivity.spkey, ""));
+		return;
+	}
 	
 	
 	////////////////////////////////////////////////////////////////////////
@@ -87,6 +107,7 @@ public class BrowserhookActivity extends Activity {
 
 	// 選択されたアイテムを処理
 	private void openBrowser(int which) {
+		Log.d(TAG, "openBrowser:" + which);
 		String[] item = conv.getConverter(which);
 		
 		// modify intent

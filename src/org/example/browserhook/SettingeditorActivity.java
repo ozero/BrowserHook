@@ -2,6 +2,7 @@ package org.example.browserhook;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 public class SettingeditorActivity extends Activity {
 
 	private static final String TAG = "bh:sea";
+	SharedPreferences sp;
 	Converter conv = new Converter();
 
 	private Button ButtonOK;
@@ -23,6 +25,9 @@ public class SettingeditorActivity extends Activity {
 		Log.d(TAG, "SettingActivity:onCreate");
 		// start
 		super.onCreate(savedInstanceState);
+		sp = getSharedPreferences(BrowserhookActivity.FILENAME, MODE_PRIVATE);
+		conv = new Converter();
+		convLoad();
 
 		// get intent
 		Bundle extras = getIntent().getExtras();
@@ -39,9 +44,11 @@ public class SettingeditorActivity extends Activity {
 		ButtonOK = (Button) findViewById(R.id.ButtonOK);
 		ButtonOK.setOnClickListener(new View.OnClickListener() {
 			@Override
+			//save
 			public void onClick(View v) {
 				String[] data = getEdittext();
 				conv.setConverter(data, idx);
+				convSave();
 				startSettingActivity();
 				finish();
 			}
@@ -49,6 +56,7 @@ public class SettingeditorActivity extends Activity {
 		ButtonCancel = (Button) findViewById(R.id.ButtonCancel);
 		ButtonCancel.setOnClickListener(new View.OnClickListener() {
 			@Override
+			//cancel
 			public void onClick(View v) {
 				startSettingActivity();
 				finish();
@@ -57,6 +65,22 @@ public class SettingeditorActivity extends Activity {
 
 		return;
 	}
+	
+	
+	//sharedprefを読んでconvに設定
+	private void convLoad() {
+		//TODO:fill stub
+		return;
+	}
+	
+	//convを読んでsharedPrefに設定
+	private void convSave() {
+		//TODO:fill stub
+		return;
+	}
+	
+	
+	
 	
 	//GUIに入力されたデータを取得
 	public String[] getEdittext() {

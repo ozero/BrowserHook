@@ -1,71 +1,95 @@
 package org.example.browserhook;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Map;
 
-import android.content.SharedPreferences;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.util.Log;
 import android.app.Activity;
 
-import org.json.JSONStringer;
+//import net.arnx.jsonic.JSON;
 
 /*
- * 変換候補の保持、およびload/save/import/export/init担当
+ * 変換候補の保持、およびシリアライザ・デシリアライザ担当。
+ * disk i/oはこれを使うActivitiesが責を持っておこなうべし。
+ * （コンテクストを盥回ししようとしてもうまい事いかなかったのよねー
+ * 
+ * データファイルの有無による初期化の呼び出しも。
+ * 
+ * データ構造の変換がめんどくさいので下手に多次元配列で書かないようにした。
+ * 
+ * 参考；http://www.masatom.in/pukiwiki/index.php?JSON%2FJson-lib%A4%F2%BB%C8%A4%A6#m889771d
+ * http://www.masatom.in/pukiwiki/JSON/Json-lib%A4%F2%BB%C8%A4%A6/JSON%A4%AB%A4%E9Java%A4%D8%A4%A4%A4%ED%A4%F3%A4%CA%CA%D1%B4%B9/
  * 
  * */
 
 public class Converter extends Activity {
-	String TAG = "BrowserHook";
-	JSONStringer json = null;
-	public static final String FILENAME = "preference";
-	private SharedPreferences sp;
-	private String prefkey = "key";
-	private static String[][] converters;
-	private String[][] converterssrc = {
-			{
+	String TAG = "bh:cv";
+	private static convertitem[] converters;
+	private convertitem[] converterssrc = {
+			new convertitem(
 					"GWT+Browser",
 					"http://www.google.co.jp/gwt/x?btnGo=Go&source=wax&ie=UTF-8&oe=UTF-8&u=",
 					"com.android.browser",
-					"com.android.browser.BrowserActivity" },
-			{ "* direct *", "", "com.android.browser",
-					"com.android.browser.BrowserActivity" },
-			{ "bing+Browser", "http://d2c.infogin.com/ja-jp/lnk000/=",
+					"com.android.browser.BrowserActivity"),
+			new convertitem("* direct *", "", "com.android.browser",
+					"com.android.browser.BrowserActivity"),
+			new convertitem("bing+Browser",
+					"http://d2c.infogin.com/ja-jp/lnk000/=",
 					"com.android.browser",
-					"com.android.browser.BrowserActivity" },
-			{ "pc2m+Dolphin", "http://rg0020.ddo.jp/p?_k_v=2&_k_c=100&_k_u=",
+					"com.android.browser.BrowserActivity"),
+			new convertitem("pc2m+Dolphin",
+					"http://rg0020.ddo.jp/p?_k_v=2&_k_c=100&_k_u=",
 					"com.mgeek.android.DolphinBrowser",
-					"com.mgeek.android.DolphinBrowser.BrowserActivity" },
-			{ "pc2m+Browser", "http://rg0020.ddo.jp/p?_k_v=2&_k_c=100&_k_u=",
+					"com.mgeek.android.DolphinBrowser.BrowserActivity"),
+			new convertitem("pc2m+Browser",
+					"http://rg0020.ddo.jp/p?_k_v=2&_k_c=100&_k_u=",
 					"com.android.browser",
-					"com.android.browser.BrowserActivity" }, };
+					"com.android.browser.BrowserActivity") };
+	
+	class convertitem {
+		String name;
+		String url;
+		String app;
+		String activity;
+
+		public convertitem(String name, String url, String app, String activity) {
+		}
+		
+		public String[] toStringArray() {
+			String[] retval={
+				this.name,this.url,this.app, this.activity
+			};
+			return retval;
+		}
+	}
+	
 
 	// constructor
 	public Converter() {
-		// データファイルがなければ初期化する
-		if (cchk() > 0) {
-			cinit(0);
-		}
-		cload();
 		return;
 	}
 
 	// 変換選択肢を全部返す
-	public String[][] getConverters() {
+	public Object[] getConverters() {
 		return converters;
 	}
 
 	// 変換選択肢を全部設定する
-	public void setConverters(String[][] data) {
+	public void setConverters(convertitem[] data) {
 		converters = data;
-		csave();
 		return;
 	}
 
 	// 変換選択肢を１つ設定する
 	public void setConverter(String[] data, int idx) {
-		converters[idx] = data;
-		csave();
+		converters[idx].name = data[0];
+		converters[idx].url = data[1];
+		converters[idx].app = data[2];
+		converters[idx].activity = data[3];
 		return;
 	}
 
@@ -75,8 +99,8 @@ public class Converter extends Activity {
 		Log.d(TAG, "getConvertersName");
 
 		// 選択ダイアログ用の選択肢一覧を生成
-		for (String[] tmp : converters) {
-			items_src.add(tmp[0]);
+		for (convertitem tmp : converters) {
+			items_src.add(tmp.name);
 		}
 		String[] items = (String[]) items_src.toArray(new String[0]);
 		return items;
@@ -85,90 +109,40 @@ public class Converter extends Activity {
 	// 変換選択肢を返す
 	public String[] getConverter(int which) {
 		Log.d(TAG, "getConverter");
-		String[] item = converters[which];
+		String[] item = converters[which].toStringArray();
 		return item;
 	}
 
-	// TODO: 内蔵ストレージファイルの有無確認
-	public int cchk() {
-		Log.d(TAG, "cchk");
-		int retval = 0;
-		return retval;
-	}
-
-	// 内蔵ストレージファイルの初期化
-	public void cinit(int force) {
-		Log.d(TAG, "cinit");
-
-		// 設定内容があれば初期化しない
-		if (cload() == 0) {
-			return;
-		}else{
-			// 初期化--forceがなければ初期化しない
-			if (force == 0) {
-				return;
-			}
-		}
-		
-		// 初期化処理
-		converters = converterssrc;
-		csave();
-		return;
-	}
-
-	// TODO: 内蔵ストレージから読み出し
-	private int cload() {
-		Log.d(TAG, "cload");
-		converters = null;
-		Object obj;
-		String[] objpath;
-		String expr = "_";
-		int count = 0;
-		//スキャン用にキャスト //TODO: ぬるぽ。
-		sp = getSharedPreferences(FILENAME, MODE_PRIVATE);
-		Map<String, ?> hashmap = sp.getAll();
-		Iterator<String> it = hashmap.keySet().iterator();
-		//スキャン
-		while (it.hasNext()) { // 次の要素があるならブロック内を実行
-			obj = it.next(); // 次の要素名を取り出す
-			// System.out.println("\t" + obj + ": " + hashmap.get(obj));
-			objpath = obj.toString().split(expr);
-			converters[Integer.parseInt(objpath[1])][Integer
-					.parseInt(objpath[2])] = hashmap.get(obj).toString();
-			Log.d(TAG, "cload[" + Integer.parseInt(objpath[1]) + "]["
-					+ Integer.parseInt(objpath[2]) + "]:"
-					+ hashmap.get(obj).toString());
+	// TODO: K-Vシリアライザ
+	public String serialize() {
+		Map map = new HashMap();
+		int count =0;
+		for(convertitem ci : converters){
+			map.put(0, converters[count]);
 			count++;
 		}
-
-		return count;
+		JSONObject jso = new JSONObject(map);
+		return jso.toString();
 	}
 
-	// TODO: 内蔵ストレージに保存
-	private void csave() {
-		Log.d(TAG, "csave");
-		//ハンドラを得る
-		SharedPreferences sp = getSharedPreferences(FILENAME, MODE_PRIVATE);
-		SharedPreferences.Editor editor = sp.edit();
-		//全要素書き込み
-		for (int i = 0; i < converters.length; i++) {
-			for (int j = 0; j < converters[i].length; j++) {
-				editor.putString(prefkey + "_" + i + "_" + j, converters[i][j]);
-				Log.d(TAG, "csave[" + i + "][" + j + "]:" + converters[i][j]);
-			}
+	// TODO: k-vデシリアライザ
+	public int deserialize(String str) {
+		//Parent p = (Parent) JSONObject.toBean(jsonObject, Parent.class);
+		//JSONObject jsonObject = JSONObject.fromObject(this);		
+		// 空のhashmapを渡されたなら初期化して返す。
+		if (converters.length == 0) {
+			cinit();
 		}
-		editor.commit();
+		return converters.length;
+
+	}
+
+	// 変換候補の初期化
+	public void cinit() {
+		Log.d(TAG, "init.");
+		// 初期化処理
+		converters = converterssrc;
 		return;
-	}
-
-	// TODO: sdcardからimport
-	public void cloadSD() {
-		Log.d(TAG, "cloadSD");
-	}
-
-	// TODO: sdcardに保存
-	public void csaveSD() {
-		Log.d(TAG, "csaveSD");
 	}
 
 }

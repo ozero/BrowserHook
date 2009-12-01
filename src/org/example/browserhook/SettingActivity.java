@@ -1,7 +1,9 @@
 package org.example.browserhook;
 
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +20,8 @@ public class SettingActivity extends Activity {
 	// todo: load fromo tsv
 	Uri uri = null;
 	String TAG = "bh:sa";
-	Converter conv = new Converter();
+	SharedPreferences sp;
+	Converter conv;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -26,6 +29,8 @@ public class SettingActivity extends Activity {
 		Log.d(TAG, "onCreate");
 		// start
 		super.onCreate(savedInstanceState);
+		conv = new Converter();
+		convLoad();
 
 		// disp main layout
 		setContentView(R.layout.main);
@@ -49,26 +54,52 @@ public class SettingActivity extends Activity {
 	@SuppressWarnings("unused")
 	private void onResume(Bundle savedInstanceState) {
 		Log.d(TAG, "onResume");
+		convSave();
 		dispSetting();
 	}
 
-	// //////////////////////////////////////////////////////////////////////
-
+	// メニューアイテム選択時のイベント
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getGroupId()) {
 		case 0:
-			conv.csaveSD();
+			exportSD();
 			return true;
 		case 1:
-			conv.cloadSD();
+			importSD();
 			return true;
 		case 2:
-			conv.cinit(1);//init --force
+			conv.cinit();// init --force
 			dispSetting();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	// //////////////////////////////////////////////////////////////////////
+	
+	//sharedprefを読んでconvに設定
+	private void convLoad() {
+		Log.d(TAG, "convLoad()");
+		sp = getSharedPreferences(BrowserhookActivity.FILENAME, MODE_PRIVATE);
+		//TODO:fill stub
+//		conv.deserialize(sp.getString(BrowserhookActivity.spkey, ""));
+		return;
+	}
+	
+	//convを読んでsharedPrefに設定
+	private void convSave() {
+		Log.d(TAG, "convSave()");
+		sp = getSharedPreferences(BrowserhookActivity.FILENAME, MODE_PRIVATE);
+		//TODO:fill stub
+//		SharedPreferences.Editor editor = sp.edit();
+//		String data =  conv.serialize();
+//		editor.putString(BrowserhookActivity.spkey, data);
+//		editor.commit();
+//		Log.d(TAG, "convSave():commit");
+		return;
+	}
+	
+	
 
 	// 設定画面を表示
 	private void dispSetting() {
@@ -107,13 +138,21 @@ public class SettingActivity extends Activity {
 		return;
 	}
 
-	// 設定画面を開く
+	// 編集画面を開く
 	private void startSettingeditorActivity(int idx) {
 		Log.d(TAG, "launch setting activity():" + idx);
 		Intent i = new Intent(this, SettingeditorActivity.class);
 		i.putExtra("index", idx);
 		startActivityForResult(i, 0);
 		return;
+	}
+
+	// TODO:SDへのエクスポート
+	public void exportSD() {
+	}
+
+	// TODO:SDからのインポート
+	public void importSD() {
 	}
 
 }
