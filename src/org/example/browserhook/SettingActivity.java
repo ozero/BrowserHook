@@ -1,158 +1,120 @@
+
+
 package org.example.browserhook;
 
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import org.example.browserhook.Converter;
-import org.example.browserhook.SettingeditorActivity;
+import android.widget.Button;
+import android.widget.EditText;
 
+
+//編集画面アクティビティ
 public class SettingActivity extends Activity {
-	// todo: load fromo tsv
-	Uri uri = null;
-	String TAG = "bh:sa";
-	SharedPreferences sp;
-	Converter conv;
 
-	/** Called when the activity is first created. */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		Log.d(TAG, "onCreate");
-		// start
-		super.onCreate(savedInstanceState);
-		conv = new Converter();
-		convLoad();
-
-		// disp main layout
-		setContentView(R.layout.main);
-
-		// do
-		dispSetting();
-
-		return;
-	}
-
-	// メニュー定義
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		menu.add(0, 0, Menu.NONE, "Export").setShortcut('0', 'k');
-		menu.add(0, 1, Menu.NONE, "Import").setShortcut('1', 's');
-		menu.add(0, 2, Menu.NONE, "Initialize").setShortcut('2', 'u');
-		return true;
-	}
-
-	// エディタから戻ってきたとき
-	@SuppressWarnings("unused")
-	private void onResume(Bundle savedInstanceState) {
-		Log.d(TAG, "onResume");
-		convSave();
-		dispSetting();
-	}
-
-	// メニューアイテム選択時のイベント
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getGroupId()) {
-		case 0:
-			exportSD();
-			return true;
-		case 1:
-			importSD();
-			return true;
-		case 2:
-			conv.cinit();// init --force
-			dispSetting();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	// //////////////////////////////////////////////////////////////////////
-	
-	//sharedprefを読んでconvに設定
-	private void convLoad() {
-		Log.d(TAG, "convLoad()");
-		sp = getSharedPreferences(BrowserhookActivity.FILENAME, MODE_PRIVATE);
-		//TODO:fill stub
-//		conv.deserialize(sp.getString(BrowserhookActivity.spkey, ""));
-		return;
-	}
-	
-	//convを読んでsharedPrefに設定
-	private void convSave() {
-		Log.d(TAG, "convSave()");
-		sp = getSharedPreferences(BrowserhookActivity.FILENAME, MODE_PRIVATE);
-		//TODO:fill stub
-//		SharedPreferences.Editor editor = sp.edit();
-//		String data =  conv.serialize();
-//		editor.putString(BrowserhookActivity.spkey, data);
-//		editor.commit();
-//		Log.d(TAG, "convSave():commit");
-		return;
-	}
-	
-	
-
-	// 設定画面を表示
-	private void dispSetting() {
-		Log.d(TAG, "dispSetting()");
-		// get converter
-		String[][] converters = conv.getConverters();
-
-		// build adapter
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1);
-		int cvlen = converters.length;
-		for (int i = 0; i < cvlen; i++) {
-			adapter.add(converters[i][0]);
+	private EditText mTitleText;
+    private EditText mUrlText;
+    private EditText mAppText;
+    private EditText mActivityText;
+    private Long mRowId;
+    private Converter mDbHelper;
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mDbHelper = new Converter(this);
+        mDbHelper.open();
+        setContentView(R.layout.settingeditor);
+        
+        //タイトルの設定
+		setTitle(R.string.apptitle_edit);
+        
+        //ウィジェットへのインスタンス
+        mTitleText = (EditText) findViewById(R.id.EditTextTITLE);
+        mUrlText = (EditText) findViewById(R.id.EditTextURL);
+        mAppText = (EditText) findViewById(R.id.EditTextAPP);
+        mActivityText = (EditText) findViewById(R.id.EditTextACTV);
+        Button confirmButton = (Button) findViewById(R.id.ButtonOK);
+        Button cancelButton = (Button) findViewById(R.id.ButtonCancel);
+        
+        //バックグラウンドから帰ってきた際に行IDを知る
+        mRowId = savedInstanceState != null ? savedInstanceState.getLong(Converter.KEY_ROWID) 
+                							: null;
+        //インテントを受け取って編集する行IDを知る
+		if (mRowId == null) {
+			Bundle extras = getIntent().getExtras();            
+			mRowId = extras != null ? extras.getLong(Converter.KEY_ROWID) 
+									: null;
 		}
 
-		// attach adapter
-		final ListView listview = (ListView) findViewById(R.id.listview);
-		listview.setAdapter(adapter);
-		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				// クリックされたら終了
-				setSelectedItem(parent, position);
-				finish();
-			}
-		});
-		Log.d(TAG, "dispSetting():done");
-		return;
-	}
+		//ウィジェットに対象データを表示する
+		populateFields();
+		
+		//イベントの設定
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View view) {
+                saveState();
+        	    setResult(RESULT_OK);
+        	    finish();
+        	}
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View view) {
+        	    setResult(RESULT_CANCELED);
+        	    finish();
+        	}
+        });
+    }
+    
+    //widgetをデータで埋める
+    private void populateFields() {
+        if (mRowId != null) {
+            Cursor note = mDbHelper.fetchItem(mRowId);
+            startManagingCursor(note);
+            mTitleText.setText(note.getString(
+    	            note.getColumnIndexOrThrow(Converter.KEY_TITLE)));
+            mUrlText.setText(note.getString(
+                    note.getColumnIndexOrThrow(Converter.KEY_URL)));
+            mAppText.setText(note.getString(
+                    note.getColumnIndexOrThrow(Converter.KEY_APP)));
+            mActivityText.setText(note.getString(
+                    note.getColumnIndexOrThrow(Converter.KEY_ACTIVITY)));
+        }
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(Converter.KEY_ROWID, mRowId);
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        populateFields();
+    }
+    
+    private void saveState() {
+        String title = mTitleText.getText().toString();
+        String body = mUrlText.getText().toString();
+        String app = mAppText.getText().toString();
+        String activity = mActivityText.getText().toString();
 
-	// リスト項目を選択した際のアクション
-	private void setSelectedItem(AdapterView<?> parent, int position) {
-		Log.d(TAG, "setSelectedItem():" + position);
-		startSettingeditorActivity(position);
-		return;
-	}
-
-	// 編集画面を開く
-	private void startSettingeditorActivity(int idx) {
-		Log.d(TAG, "launch setting activity():" + idx);
-		Intent i = new Intent(this, SettingeditorActivity.class);
-		i.putExtra("index", idx);
-		startActivityForResult(i, 0);
-		return;
-	}
-
-	// TODO:SDへのエクスポート
-	public void exportSD() {
-	}
-
-	// TODO:SDからのインポート
-	public void importSD() {
-	}
-
+        if (mRowId == null) {
+            long id = mDbHelper.createItem(title, body, app, activity);
+            if (id > 0) {
+                mRowId = id;
+            }
+        } else {
+            mDbHelper.updateItem(mRowId, title, body, app, activity);
+        }
+    }
+    
 }

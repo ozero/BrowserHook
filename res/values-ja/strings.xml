@@ -2,11 +2,23 @@
 <resources>
     <string name="hello">ok.</string>
     <string name="app_name">BrowserHook</string>
-<string name="TextViewNAME">アイテム名</string>
+<string name="TextViewTITLE">アイテム名</string>
 <string name="TextViewURL">変換URL</string>
 <string name="TextViewAPP">URLを開くブラウザ名</string>
 <string name="TextViewACTV">インテントを受取るアクティビティ</string>
 <string name="ButtonOK">この内容で保存</string>
 <string name="ButtonCancel">キャンセル</string>
+
+<string name="menu_insert">項目を追加</string>
+<string name="menu_delete">削除</string>
+<string name="menu_edit">編集</string>
+
+<string name="apptitle_main">URLの変換方法を選んでください</string>
+<string name="apptitle_main_standalone">設定：編集する項目を選んでください</string>
+<string name="apptitle_edit">変換項目の編集</string>
+
+
+
+
 
 </resources>

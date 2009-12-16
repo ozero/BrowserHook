@@ -7,18 +7,21 @@
 	android:orientation="vertical">
 
 
-  <TextView android:text="@string/TextViewNAME" android:id="@+id/TextViewNAME"
+  <TextView android:text="@string/TextViewTITLE" android:id="@+id/TextViewTITLE"
     android:layout_width="wrap_content" android:layout_height="wrap_content" />
-  <EditText android:text="@+id/EditTextNAME" android:id="@+id/EditTextNAME"
+  <EditText android:text="@+id/EditTextTITLE" android:id="@+id/EditTextTITLE"
     android:layout_width="fill_parent" android:layout_height="wrap_content" />
+
   <TextView android:text="@string/TextViewURL" android:id="@+id/TextViewURL"
     android:layout_width="wrap_content" android:layout_height="wrap_content" />
   <EditText android:text="@+id/EditTextURL" android:id="@+id/EditTextURL"
     android:layout_width="fill_parent" android:layout_height="wrap_content" />
+
   <TextView android:text="@string/TextViewAPP" android:id="@+id/TextViewAPP"
     android:layout_width="wrap_content" android:layout_height="wrap_content" />
   <EditText android:text="@+id/EditTextAPP" android:id="@+id/EditTextAPP"
     android:layout_width="fill_parent" android:layout_height="wrap_content" />
+
   <TextView android:text="@string/TextViewACTV" android:id="@+id/TextViewACTV"
     android:layout_width="wrap_content" android:layout_height="wrap_content" />
   <EditText android:text="@+id/EditTextACTV" android:id="@+id/EditTextACTV"
