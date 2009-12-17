@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="hello">ok.</string>
-    <string name="app_name">BrowserHook</string>
-<string name="TextViewTITLE">アイテム名</string>
-<string name="TextViewURL">変換URL</string>
-<string name="TextViewAPP">URLを開くブラウザ名</string>
-<string name="TextViewACTV">インテントを受取るアクティビティ</string>
-<string name="ButtonOK">この内容で保存</string>
-<string name="ButtonCancel">キャンセル</string>
-
-<string name="menu_insert">項目を追加</string>
-<string name="menu_delete">削除</string>
-<string name="menu_edit">編集</string>
-
-<string name="apptitle_main">URLの変換方法を選んでください</string>
-<string name="apptitle_main_standalone">設定：編集する項目を選んでください</string>
-<string name="apptitle_edit">変換項目の編集</string>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+	<string name="app_name">BrowserHook</string>
+	<string name="TextViewTITLE">アイテム名</string>
+	<string name="TextViewURL">変換URL</string>
+	<string name="TextViewAPP">URLを開くブラウザ名</string>
+	<string name="TextViewACTV">インテントを受取るアクティビティ</string>
+  <string name="TextViewORDER">この項目を何番目に表示するか</string>
+	<string name="ButtonOK">この内容で保存</string>
+	<string name="ButtonCancel">キャンセル</string>
+	<string name="menu_insert">変換項目を追加する</string>
+	<string name="menu_delete">一覧から削除する</string>
+	<string name="menu_edit">この項目を編集する</string>
+  <string name="menu_import">SDから読み込み</string>
+  <string name="menu_export">SDへ書き出し</string>
+  <string name="menu_initialize">項目の初期化</string>
 
 
-
-
-
+	<string name="apptitle_main">URLの変換方法を選んでください</string>
+	<string name="apptitle_main_standalone">設定：編集する項目を選んでください</string>
+	<string name="apptitle_edit">変換項目の編集</string>
 </resources>

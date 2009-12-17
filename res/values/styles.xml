@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="my_background">#fff0f0f0</drawable>
+    <style name="Theme.base" parent="android:style/Theme.Light">
+    <item name="android:windowBackground">@drawable/my_background</item> 
+    </style>
+</resources>

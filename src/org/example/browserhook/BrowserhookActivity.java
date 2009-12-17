@@ -1,5 +1,6 @@
 package org.example.browserhook;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -18,10 +20,6 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import org.example.browserhook.Converter;
 
-
-
-
-
 public class BrowserhookActivity extends ListActivity {
 	static Uri uri = null;
 	static Boolean standalone = true;
@@ -29,8 +27,12 @@ public class BrowserhookActivity extends ListActivity {
 	static String spkey = "convkey";
     private static final int ACTIVITY_CREATE=0;
     private static final int ACTIVITY_EDIT=1;
-	private static final int INSERT_ID = Menu.FIRST;
-	private static final int DELETE_ID = Menu.FIRST + 1;
+	private static final int INSERT_ID = R.id.menu_insert;
+	private static final int EXPORT_ID = R.id.menu_export;
+	private static final int IMPORT_ID = R.id.menu_import;
+	private static final int INITIALIZE_ID = R.id.menu_initialize;
+	private static final int EDIT_ID = ContextMenu.FIRST;
+	private static final int DELETE_ID = ContextMenu.FIRST + 1;
 	private Converter mDbHelper;
 
 	/** Called when the activity is first created. */
@@ -40,7 +42,8 @@ public class BrowserhookActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		mDbHelper = new Converter(this);
 		mDbHelper.open();
-		//インテントが渡されたか単体起動かを判別
+		registerForContextMenu(getListView());//右クリックメニューを登録
+        //インテントが渡されたか単体起動かを判別
 		if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
 			setTitle(R.string.apptitle_main);//タイトルを設定
 			standalone = false;
@@ -48,6 +51,8 @@ public class BrowserhookActivity extends ListActivity {
 			Log.d(TAG, "intent:got");
 		}else{
 			setTitle(R.string.apptitle_main_standalone);//タイトルを設定
+			standalone = true;
+			Log.d(TAG, "intent:none");
 		}
 		// ask convert pattern
 		dispSelectDialog();
@@ -84,7 +89,11 @@ public class BrowserhookActivity extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		menu.add(0, INSERT_ID, 0, R.string.menu_insert);
+    	//メニューインフレーターを取得
+    	MenuInflater inflater = getMenuInflater();
+    	//xmlのリソースファイルを使用してメニューにアイテムを追加
+    	inflater.inflate(R.menu.main, menu);
+    	//できたらtrueを返す
 		return true;
 	}
 
@@ -95,27 +104,38 @@ public class BrowserhookActivity extends ListActivity {
 		case INSERT_ID:
 			createItem();
 			return true;
+		case IMPORT_ID:
+			alertdialog("sorry","not impremented yet.");
+			return true;
+		case EXPORT_ID:
+			alertdialog("sorry","not impremented yet.");
+			return true;
+		case INITIALIZE_ID:
+			initializeItem();
+			return true;
 		}
 
 		return super.onMenuItemSelected(featureId, item);
 	}
 
-    //TODO: figure out this
     //右クリックメニューが呼ばれた際
     @Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, EDIT_ID, 0, R.string.menu_edit);
         menu.add(0, DELETE_ID, 0, R.string.menu_delete);
 	}
 
-    //TODO: figure out this
     //右クリックメニューの項目がクリックされた際
     @Override
 	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 		switch(item.getItemId()) {
+    	case EDIT_ID:
+    		startSettingActivity(info.id);
+	        return true;
     	case DELETE_ID:
-    		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 	        mDbHelper.deleteItem(info.id);
 	        dispSelectDialog();
 	        return true;
@@ -135,10 +155,10 @@ public class BrowserhookActivity extends ListActivity {
 		startManagingCursor(itemCursor);
 
 		// 表示するノート名一覧
-		String[] from = new String[] { Converter.KEY_TITLE };
+		String[] from = new String[] { Converter.KEY_ORDER, Converter.KEY_TITLE };
 
 		// 表示するノート名に関連付けるwidgetのリスト
-		int[] to = new int[] { R.id.text1 };
+		int[] to = new int[] { R.id.text0 ,R.id.text1 };
 
 		// TODO: figure out this
 		// Now create a simple cursor adapter and set it to display
@@ -186,10 +206,32 @@ public class BrowserhookActivity extends ListActivity {
 	}
 
 	
-    //ノートを新規作成 TODO: SettingActivity.class::新規作成対応
+    //項目を新規作成
     private void createItem() {
         Intent i = new Intent(this, SettingActivity.class);
         startActivityForResult(i, ACTIVITY_CREATE);
-    }	
+    }
+    
+    //項目を初期化
+    private void initializeItem() {
+    	mDbHelper.initdb();
+    	dispSelectDialog();
+    }
+    
+    //メッセージを出す
+    private void alertdialog(String title,String msg){
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	builder.setTitle(title);
+    	builder.setMessage(msg);
+    	builder.setPositiveButton("OK",new android.content.DialogInterface.OnClickListener() {
+	        public void onClick(android.content.DialogInterface dialog,int whichButton) {
+	            setResult(RESULT_OK);
+	        }
+	    });
+    	builder.create();
+    	builder.show();
+    }
+    
+    
 	
 }

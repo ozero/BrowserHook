@@ -18,6 +18,7 @@ public class SettingActivity extends Activity {
     private EditText mUrlText;
     private EditText mAppText;
     private EditText mActivityText;
+    private EditText mOrderText;
     private Long mRowId;
     private Converter mDbHelper;
     
@@ -36,6 +37,7 @@ public class SettingActivity extends Activity {
         mUrlText = (EditText) findViewById(R.id.EditTextURL);
         mAppText = (EditText) findViewById(R.id.EditTextAPP);
         mActivityText = (EditText) findViewById(R.id.EditTextACTV);
+        mOrderText = (EditText) findViewById(R.id.EditTextORDER);
         Button confirmButton = (Button) findViewById(R.id.ButtonOK);
         Button cancelButton = (Button) findViewById(R.id.ButtonCancel);
         
@@ -81,6 +83,8 @@ public class SettingActivity extends Activity {
                     note.getColumnIndexOrThrow(Converter.KEY_APP)));
             mActivityText.setText(note.getString(
                     note.getColumnIndexOrThrow(Converter.KEY_ACTIVITY)));
+            mOrderText.setText(note.getString(
+                    note.getColumnIndexOrThrow(Converter.KEY_ORDER)));
         }
     }
     
@@ -106,14 +110,15 @@ public class SettingActivity extends Activity {
         String body = mUrlText.getText().toString();
         String app = mAppText.getText().toString();
         String activity = mActivityText.getText().toString();
+        String order = mOrderText.getText().toString();
 
         if (mRowId == null) {
-            long id = mDbHelper.createItem(title, body, app, activity);
+            long id = mDbHelper.createItem("new item", "", "", "", "10");
             if (id > 0) {
                 mRowId = id;
             }
         } else {
-            mDbHelper.updateItem(mRowId, title, body, app, activity);
+            mDbHelper.updateItem(mRowId, title, body, app, activity, order);
         }
     }
     
