@@ -3,25 +3,13 @@
   android:orientation="vertical" 
   android:layout_width="fill_parent"
   android:layout_height="fill_parent"
-  android:background="#fff0f0f0"
-  android:textColor="#ff333333" 
-  >
-<LinearLayout
-  android:orientation="vertical" 
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent"
   >
 	<ListView android:id="@+id/android:list"
 	  android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-	  android:background="#ffe9e9e9"
-	  android:textColor="#ff333333" 
 		 />
 	<TextView android:id="@+id/android:empty"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
-    android:background="#ffe0e0e0"
-    android:textColor="#ff333333" 
 		android:text="No Items.." />
-</LinearLayout>
 </LinearLayout>
 

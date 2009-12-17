@@ -214,9 +214,31 @@ public class BrowserhookActivity extends ListActivity {
     
     //項目を初期化
     private void initializeItem() {
-    	mDbHelper.initdb();
-    	dispSelectDialog();
+    	//confirmダイアログを出す
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	builder.setTitle(R.string.alert_init_title);
+    	builder.setMessage(R.string.alert_init_msg);
+    	builder.setPositiveButton("OK",new android.content.DialogInterface.OnClickListener() {
+	        public void onClick(android.content.DialogInterface dialog,int whichButton) {
+	        	//OKなら
+	            setResult(RESULT_OK);
+	        	mDbHelper.initdb();
+	        	dispSelectDialog();
+	        }
+	    });
+    	builder.setNegativeButton("Cancel",new android.content.DialogInterface.OnClickListener() {
+	        public void onClick(android.content.DialogInterface dialog,int whichButton) {
+	        	//キャンセルなら
+	            setResult(RESULT_CANCELED);
+	            return;
+	        }
+	    });
+    	builder.create();
+    	builder.show();
     }
+    
+    //TODO:エクスポート処理
+    //TODO:インポート処理
     
     //メッセージを出す
     private void alertdialog(String title,String msg){
@@ -231,6 +253,7 @@ public class BrowserhookActivity extends ListActivity {
     	builder.create();
     	builder.show();
     }
+    
     
     
 	

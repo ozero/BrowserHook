@@ -2,6 +2,7 @@
 <resources>
     <drawable name="my_background">#fff0f0f0</drawable>
     <style name="Theme.base" parent="android:style/Theme.Light">
+    <!-- http://developer.android.com/intl/zh-TW/reference/android/R.styleable.html#Theme -->
     <item name="android:windowBackground">@drawable/my_background</item> 
     </style>
 </resources>

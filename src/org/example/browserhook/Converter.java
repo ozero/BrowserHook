@@ -51,18 +51,18 @@ public class Converter {
 
 	public static String iv[][] = {
 			{ "direct[dolphin]", "",
-					"com.mgeek.android.DolphinBrowser",
-					"com.mgeek.android.DolphinBrowser.BrowserActivity","10" },
+					"com.mgeek.android.DolphinBrowser.Browser",
+					"com.mgeek.android.DolphinBrowser.Browser.BrowserActivity","10" },
 			{ "pc2m+dolphin", "http://rg0020.ddo.jp/p/?",
-					"com.mgeek.android.DolphinBrowser",
-					"com.mgeek.android.DolphinBrowser.BrowserActivity","20" },
+					"com.mgeek.android.DolphinBrowser.Browser",
+					"com.mgeek.android.DolphinBrowser.Browser.BrowserActivity","20" },
 			{ "bing+dolphin", "http://d2c.infogin.com/ja-jp/lnk000/=",
-					"com.mgeek.android.DolphinBrowser",
-					"com.mgeek.android.DolphinBrowser.BrowserActivity","30" },
+					"com.mgeek.android.DolphinBrowser.Browser",
+					"com.mgeek.android.DolphinBrowser.Browser.BrowserActivity","30" },
 			{ "direct[browser]", "", "com.android.browser",
 					"com.android.browser.BrowserActivity","40" },
 			{ "direct[steel]", "", "com.kolbysoft.steel",
-					"com.kolbysoft.steel.BrowserActivity","50" },
+					"com.kolbysoft.steel.Steel","50" },
 		};
 
 	// 呼び出し元Activityへの参照をContextとして持ち回りできるように

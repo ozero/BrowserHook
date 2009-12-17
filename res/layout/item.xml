@@ -3,22 +3,17 @@
   android:orientation="horizontal" 
   android:layout_width="fill_parent"
   android:layout_height="fill_parent"
-  android:background="#fff0f0f0"
-  android:textColor="#ff998877" 
   >
 <TextView android:id="@+id/text0"
     android:layout_height="48dp"
     android:layout_width="wrap_content"
     android:textSize="10dp"
-    android:background="#fff0f0f0"
-    android:textColor="#ff999999" 
+    android:textColor="#ffcccccc" 
     />
 <TextView android:id="@+id/text99"
     android:layout_height="48dp"
     android:layout_width="wrap_content"
     android:textSize="16dp"
-    android:background="#fff0f0f0"
-    android:textColor="#ff999999" 
     android:text=" " 
     />
 <TextView android:id="@+id/text1"
@@ -26,8 +21,7 @@
     android:layout_width="wrap_content"
     android:layout_height="30dp"
     android:textSize="20dp"
-    android:background="#fff0f0f0"
-    android:textColor="#ff333333" 
+    android:textColor="#ff666666" 
     />
 </LinearLayout>
 

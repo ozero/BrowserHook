@@ -4,28 +4,38 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
-	android:orientation="vertical">
+	android:orientation="vertical"
+	android:scrollbars="vertical"
+	>
 
 
   <TextView android:text="@string/TextViewTITLE" android:id="@+id/TextViewTITLE"
     android:layout_width="wrap_content" android:layout_height="wrap_content" />
   <EditText android:text="@+id/EditTextTITLE" android:id="@+id/EditTextTITLE"
-    android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    android:layout_width="fill_parent" android:layout_height="wrap_content"
+    android:typeface="monospace"
+     />
 
   <TextView android:text="@string/TextViewURL" android:id="@+id/TextViewURL"
     android:layout_width="wrap_content" android:layout_height="wrap_content" />
   <EditText android:text="@+id/EditTextURL" android:id="@+id/EditTextURL"
-    android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    android:layout_width="fill_parent" android:layout_height="wrap_content" 
+    android:typeface="monospace"
+     />
 
   <TextView android:text="@string/TextViewAPP" android:id="@+id/TextViewAPP"
     android:layout_width="wrap_content" android:layout_height="wrap_content" />
   <EditText android:text="@+id/EditTextAPP" android:id="@+id/EditTextAPP"
-    android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    android:layout_width="fill_parent" android:layout_height="wrap_content" 
+    android:typeface="monospace"
+     />
 
   <TextView android:text="@string/TextViewACTV" android:id="@+id/TextViewACTV"
     android:layout_width="wrap_content" android:layout_height="wrap_content" />
   <EditText android:text="@+id/EditTextACTV" android:id="@+id/EditTextACTV"
-    android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    android:layout_width="fill_parent" android:layout_height="wrap_content" 
+    android:typeface="monospace"
+     />
 
   <TextView android:text="@string/TextViewORDER" android:id="@+id/TextViewORDER"
     android:layout_width="wrap_content" android:layout_height="wrap_content" />
@@ -35,22 +45,24 @@
 
 
 <LinearLayout
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content"
-	>
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:orientation="horizontal"
+  android:scrollbars="none"
+  >
 	<Button
 		android:text="@string/ButtonOK"
 		android:id="@+id/ButtonOK"
     android:layout_weight="1"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+    android:layout_height="wrap_content"
 		/>
 	<Button
 		android:text="@string/ButtonCancel"
 		android:id="@+id/ButtonCancel"
     android:layout_weight="1"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+    android:layout_height="wrap_content"
 		/>
 </LinearLayout>
 

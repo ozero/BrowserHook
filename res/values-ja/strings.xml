@@ -4,7 +4,7 @@
 	<string name="TextViewTITLE">アイテム名</string>
 	<string name="TextViewURL">変換URL</string>
 	<string name="TextViewAPP">URLを開くブラウザ名</string>
-	<string name="TextViewACTV">インテントを受取るアクティビティ</string>
+	<string name="TextViewACTV">インテントを受け取るアクティビティ</string>
   <string name="TextViewORDER">この項目を何番目に表示するか</string>
 	<string name="ButtonOK">この内容で保存</string>
 	<string name="ButtonCancel">キャンセル</string>
@@ -14,6 +14,8 @@
   <string name="menu_import">SDから読み込み</string>
   <string name="menu_export">SDへ書き出し</string>
   <string name="menu_initialize">項目の初期化</string>
+  <string name="alert_init_title">項目の初期化</string>
+  <string name="alert_init_msg">項目を初期化していいですか？</string>
 
 
 	<string name="apptitle_main">URLの変換方法を選んでください</string>
