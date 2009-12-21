@@ -15,18 +15,18 @@ public final class R {
         public static final int my_background=0x7f020001;
     }
     public static final class id {
-        public static final int ButtonCancel=0x7f07000e;
-        public static final int ButtonOK=0x7f07000d;
-        public static final int EditTextACTV=0x7f07000a;
-        public static final int EditTextAPP=0x7f070008;
-        public static final int EditTextORDER=0x7f07000c;
-        public static final int EditTextTITLE=0x7f070004;
-        public static final int EditTextURL=0x7f070006;
-        public static final int TextViewACTV=0x7f070009;
-        public static final int TextViewAPP=0x7f070007;
-        public static final int TextViewORDER=0x7f07000b;
-        public static final int TextViewTITLE=0x7f070003;
-        public static final int TextViewURL=0x7f070005;
+        public static final int ButtonOK=0x7f07000e;
+        public static final int EditTextACTV=0x7f07000b;
+        public static final int EditTextAPP=0x7f070009;
+        public static final int EditTextORDER=0x7f07000d;
+        public static final int EditTextTITLE=0x7f070005;
+        public static final int EditTextURL=0x7f070007;
+        public static final int ScrollView01=0x7f070003;
+        public static final int TextViewACTV=0x7f07000a;
+        public static final int TextViewAPP=0x7f070008;
+        public static final int TextViewORDER=0x7f07000c;
+        public static final int TextViewTITLE=0x7f070004;
+        public static final int TextViewURL=0x7f070006;
         public static final int menu_export=0x7f070010;
         public static final int menu_import=0x7f070011;
         public static final int menu_initialize=0x7f070012;

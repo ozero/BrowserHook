@@ -18,7 +18,8 @@
       </intent-filter>
     </activity>
     <activity android:name=".SettingActivity" android:label="@string/app_name"
-      android:theme="@style/Theme.base" />
+    android:theme="@style/Theme.base"
+      />
   </application>
   <uses-sdk android:minSdkVersion="4" />
 </manifest> 

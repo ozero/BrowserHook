@@ -39,7 +39,6 @@ public class SettingActivity extends Activity {
         mActivityText = (EditText) findViewById(R.id.EditTextACTV);
         mOrderText = (EditText) findViewById(R.id.EditTextORDER);
         Button confirmButton = (Button) findViewById(R.id.ButtonOK);
-        Button cancelButton = (Button) findViewById(R.id.ButtonCancel);
         
         //バックグラウンドから帰ってきた際に行IDを知る
         mRowId = savedInstanceState != null ? savedInstanceState.getLong(Converter.KEY_ROWID) 
@@ -59,12 +58,6 @@ public class SettingActivity extends Activity {
         	public void onClick(View view) {
                 saveState();
         	    setResult(RESULT_OK);
-        	    finish();
-        	}
-        });
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-        	public void onClick(View view) {
-        	    setResult(RESULT_CANCELED);
         	    finish();
         	}
         });

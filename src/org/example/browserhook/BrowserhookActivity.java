@@ -45,9 +45,9 @@ public class BrowserhookActivity extends ListActivity {
 		registerForContextMenu(getListView());//右クリックメニューを登録
         //インテントが渡されたか単体起動かを判別
 		if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
-			setTitle(R.string.apptitle_main);//タイトルを設定
 			standalone = false;
 			uri = getIntent().getData();
+			setTitle(getText(R.string.apptitle_main).toString() + ": " + uri.toString());//タイトルを設定
 			Log.d(TAG, "intent:got");
 		}else{
 			setTitle(R.string.apptitle_main_standalone);//タイトルを設定
@@ -146,9 +146,11 @@ public class BrowserhookActivity extends ListActivity {
 	
 	// //////////////////////////////////////////////////////////////////////
 
-	// このactivityに据えてるListViewWidgetにノート一覧を流し込む
+	// このactivityに据えてるListViewWidgetにアイテム一覧を流し込む
 	private void dispSelectDialog() {
 		Log.d(TAG, "init:dialog");
+		
+		//url2convert
 		
 		//
 		Cursor itemCursor = mDbHelper.fetchAllItems();
@@ -160,7 +162,6 @@ public class BrowserhookActivity extends ListActivity {
 		// 表示するノート名に関連付けるwidgetのリスト
 		int[] to = new int[] { R.id.text0 ,R.id.text1 };
 
-		// TODO: figure out this
 		// Now create a simple cursor adapter and set it to display
 		SimpleCursorAdapter notes = new SimpleCursorAdapter(this,
 				R.layout.item, itemCursor, from, to);
