@@ -70,7 +70,7 @@ public class BrowserhookActivity extends ListActivity {
 		dispSelectDialog();
 	}
 
-	// アイテムがクリックされた際の処理
+	// リストアイテムがクリックされた際の処理
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		Log.d(TAG, "onListItemClick():" + id);
@@ -149,8 +149,6 @@ public class BrowserhookActivity extends ListActivity {
 	// このactivityに据えてるListViewWidgetにアイテム一覧を流し込む
 	private void dispSelectDialog() {
 		Log.d(TAG, "init:dialog");
-		
-		//url2convert
 		
 		//
 		Cursor itemCursor = mDbHelper.fetchAllItems();
