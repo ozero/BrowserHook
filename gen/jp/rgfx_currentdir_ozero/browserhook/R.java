@@ -15,22 +15,32 @@ public final class R {
         public static final int my_background=0x7f020001;
     }
     public static final class id {
-        public static final int ButtonOK=0x7f07000e;
-        public static final int EditTextACTV=0x7f07000b;
-        public static final int EditTextAPP=0x7f070009;
-        public static final int EditTextORDER=0x7f07000d;
-        public static final int EditTextTITLE=0x7f070005;
-        public static final int EditTextURL=0x7f070007;
-        public static final int ScrollView01=0x7f070003;
-        public static final int TextViewACTV=0x7f07000a;
-        public static final int TextViewAPP=0x7f070008;
-        public static final int TextViewORDER=0x7f07000c;
-        public static final int TextViewTITLE=0x7f070004;
-        public static final int TextViewURL=0x7f070006;
-        public static final int menu_export=0x7f070010;
-        public static final int menu_import=0x7f070011;
-        public static final int menu_initialize=0x7f070012;
-        public static final int menu_insert=0x7f07000f;
+        public static final int ButtonConvert=0x7f07000a;
+        public static final int ButtonDirect=0x7f070006;
+        public static final int ButtonOK=0x7f070018;
+        public static final int ButtonSetting=0x7f07000c;
+        public static final int EditTextACTV=0x7f070015;
+        public static final int EditTextAPP=0x7f070013;
+        public static final int EditTextORDER=0x7f070017;
+        public static final int EditTextTITLE=0x7f07000f;
+        public static final int EditTextURL=0x7f070011;
+        public static final int LinearLayoutConvert=0x7f070008;
+        public static final int LinearLayoutDirect=0x7f070004;
+        public static final int LinearLayoutSetting=0x7f07000b;
+        public static final int ScrollView01=0x7f07000d;
+        public static final int SpinnerBrowsers=0x7f070005;
+        public static final int SpinnerConverters=0x7f070009;
+        public static final int TVbrowsers=0x7f070003;
+        public static final int TVconverters=0x7f070007;
+        public static final int TextViewACTV=0x7f070014;
+        public static final int TextViewAPP=0x7f070012;
+        public static final int TextViewORDER=0x7f070016;
+        public static final int TextViewTITLE=0x7f07000e;
+        public static final int TextViewURL=0x7f070010;
+        public static final int menu_export=0x7f07001a;
+        public static final int menu_import=0x7f07001b;
+        public static final int menu_initialize=0x7f07001c;
+        public static final int menu_insert=0x7f070019;
         public static final int text0=0x7f070000;
         public static final int text1=0x7f070002;
         public static final int text99=0x7f070001;
@@ -45,24 +55,27 @@ public final class R {
     }
     public static final class string {
         public static final int ButtonCancel=0x7f040007;
+        public static final int ButtonConvert=0x7f040009;
+        public static final int ButtonDirect=0x7f040008;
         public static final int ButtonOK=0x7f040006;
+        public static final int ButtonSetting=0x7f04000a;
         public static final int TextViewACTV=0x7f040004;
         public static final int TextViewAPP=0x7f040003;
         public static final int TextViewORDER=0x7f040005;
         public static final int TextViewTITLE=0x7f040001;
         public static final int TextViewURL=0x7f040002;
-        public static final int alert_init_msg=0x7f040012;
-        public static final int alert_init_title=0x7f040011;
+        public static final int alert_init_msg=0x7f040015;
+        public static final int alert_init_title=0x7f040014;
         public static final int app_name=0x7f040000;
-        public static final int apptitle_edit=0x7f040010;
-        public static final int apptitle_main=0x7f04000e;
-        public static final int apptitle_main_standalone=0x7f04000f;
-        public static final int menu_delete=0x7f040009;
-        public static final int menu_edit=0x7f04000a;
-        public static final int menu_export=0x7f04000c;
-        public static final int menu_import=0x7f04000b;
-        public static final int menu_initialize=0x7f04000d;
-        public static final int menu_insert=0x7f040008;
+        public static final int apptitle_edit=0x7f040013;
+        public static final int apptitle_main=0x7f040011;
+        public static final int apptitle_main_standalone=0x7f040012;
+        public static final int menu_delete=0x7f04000c;
+        public static final int menu_edit=0x7f04000d;
+        public static final int menu_export=0x7f04000f;
+        public static final int menu_import=0x7f04000e;
+        public static final int menu_initialize=0x7f040010;
+        public static final int menu_insert=0x7f04000b;
     }
     public static final class style {
         public static final int Theme_base=0x7f050000;

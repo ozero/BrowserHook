@@ -28,8 +28,6 @@ public class Converter {
 
 	public static final String KEY_TITLE = "title";
 	public static final String KEY_URL = "url";
-	public static final String KEY_APP = "app";
-	public static final String KEY_ACTIVITY = "activity";
 	public static final String KEY_ORDER = "ord";
 	public static final String KEY_ROWID = "_id";
 
@@ -38,32 +36,22 @@ public class Converter {
 	private SQLiteDatabase mDb;// DBへの接続オブジェクト
 
 	private static final String DATABASE_NAME = "data";
-	private static final String DATABASE_TABLE = "item";
-	private static final int DATABASE_VERSION = 2;
+	private static final String DATABASE_TABLE = "convs";
+	private static final int DATABASE_VERSION = 3;
 
 	/**
 	 * Database creation sql statement
 	 */
-	private static final String DATABASE_CREATE = "create table "
-			+ DATABASE_TABLE + " (" + "_id integer primary key autoincrement, "
+	private static final String DATABASE_CREATE = "CREATE TABLE "
+			+DATABASE_TABLE 
+			+ " (" + "_id integer primary key autoincrement, "
 			+ "title text not null, url text not null, "
-			+ "app text not null, activity text not null, ord text not null);";
+			+ "ord text not null);";
 
-	public static String iv[][] = {
-			{ "direct[dolphin]", "",
-					"com.mgeek.android.DolphinBrowser.Browser",
-					"com.mgeek.android.DolphinBrowser.Browser.BrowserActivity","10" },
-			{ "pc2m+dolphin", "http://rg0020.ddo.jp/p/?_k_c=200&_k_u=",
-					"com.mgeek.android.DolphinBrowser.Browser",
-					"com.mgeek.android.DolphinBrowser.Browser.BrowserActivity","20" },
-			{ "bing+dolphin", "http://d2c.infogin.com/ja-jp/lnk000/=",
-					"com.mgeek.android.DolphinBrowser.Browser",
-					"com.mgeek.android.DolphinBrowser.Browser.BrowserActivity","30" },
-			{ "direct[browser]", "", "com.android.browser",
-					"com.android.browser.BrowserActivity","40" },
-			{ "direct[steel]", "", "com.kolbysoft.steel",
-					"com.kolbysoft.steel.Steel","50" },
-		};
+	public static String initval[][] = {
+			{ "pc2m", "http://rg0020.ddo.jp/p/?_k_c=200&_k_u=", "20" },
+			{ "bing", "http://d2c.infogin.com/ja-jp/lnk000/=", "30" },
+			{ "GoogleWT", "http://d2c.infogin.com/ja-jp/lnk000/=", "30" }, };
 
 	// 呼び出し元Activityへの参照をContextとして持ち回りできるように
 	private final Context mCtx;
@@ -80,19 +68,17 @@ public class Converter {
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			db.execSQL(DATABASE_CREATE);
-			//あと初期データの投入
-			for(String iv2[] : iv){
+			// あと初期データの投入
+			for (String iv2[] : initval) {
 				ContentValues initialValues = new ContentValues();
 				initialValues.put(KEY_TITLE, iv2[0]);
 				initialValues.put(KEY_URL, iv2[1]);
-				initialValues.put(KEY_APP, iv2[2]);
-				initialValues.put(KEY_ACTIVITY, iv2[3]);
-				initialValues.put(KEY_ORDER, iv2[4]);
+				initialValues.put(KEY_ORDER, iv2[2]);
 				db.insert(DATABASE_TABLE, null, initialValues);
 			}
 			return;
 		}
-		
+
 		@Override
 		// スケーマのアップグレード処理に付けたし
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -141,12 +127,10 @@ public class Converter {
 	 * successfully created return the new rowId for that item, otherwise return
 	 * a -1 to indicate failure.
 	 */
-	public long createItem(String title, String url, String app, String activity, String order) {
+	public long createItem(String title, String url, String order) {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_TITLE, title);
 		initialValues.put(KEY_URL, url);
-		initialValues.put(KEY_APP, app);
-		initialValues.put(KEY_ACTIVITY, activity);
 		initialValues.put(KEY_ORDER, order);
 
 		return mDb.insert(DATABASE_TABLE, null, initialValues);
@@ -172,7 +156,7 @@ public class Converter {
 	public Cursor fetchAllItems() {
 
 		return mDb.query(DATABASE_TABLE, new String[] { KEY_ROWID, KEY_TITLE,
-				KEY_URL, KEY_APP, KEY_ACTIVITY , KEY_ORDER }, null, null, null, null, KEY_ORDER);
+				KEY_URL, KEY_ORDER }, null, null, null, null, KEY_ORDER);
 	}
 
 	/**
@@ -184,13 +168,32 @@ public class Converter {
 	 * @throws SQLException
 	 *             if item could not be found/retrieved
 	 */
-	public Cursor fetchItem(long rowId) throws SQLException {
+	public Cursor fetchItem(long rowid) throws SQLException {
 
-		Cursor mCursor =
+		Cursor mCursor = mDb.query(true, DATABASE_TABLE, new String[] {
+				KEY_ROWID, KEY_TITLE, KEY_URL, KEY_ORDER }, KEY_ROWID + "="
+				+ rowid, null, null, null, null, null);
+		if (mCursor != null) {
+			mCursor.moveToFirst();
+		}
+		return mCursor;
 
-		mDb.query(true, DATABASE_TABLE, new String[] { KEY_ROWID, KEY_TITLE,
-				KEY_URL, KEY_APP, KEY_ACTIVITY, KEY_ORDER }, KEY_ROWID + "=" + rowId,
-				null, null, null, null, null);
+	}
+
+	/**
+	 * Return a Cursor positioned at the item that matches the given rowId
+	 * 
+	 * @param rowId
+	 *            id of item to retrieve
+	 * @return Cursor positioned to matching item, if found
+	 * @throws SQLException
+	 *             if item could not be found/retrieved
+	 */
+	public Cursor fetchItemByTitle(String title) throws SQLException {
+
+		Cursor mCursor = mDb.query(true, DATABASE_TABLE, new String[] {
+				KEY_ROWID, KEY_TITLE, KEY_URL, KEY_ORDER }, KEY_TITLE + "='"
+				+ title + "'", null, null, null, null, null);
 		if (mCursor != null) {
 			mCursor.moveToFirst();
 		}
@@ -203,37 +206,29 @@ public class Converter {
 	 * specified using the rowId, and it is altered to use the title and body
 	 * values passed in
 	 */
-	public boolean updateItem(long rowId, String title, String url, String app,
-			String activity,String order) {
+	public boolean updateItem(long rowId, String title, String url, String order) {
 		ContentValues args = new ContentValues();
 		args.put(KEY_TITLE, title);
 		args.put(KEY_URL, url);
-		args.put(KEY_APP, app);
-		args.put(KEY_ACTIVITY, activity);
 		args.put(KEY_ORDER, order);
 
 		return mDb.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
 	}
-	
-	
-	
-	//discard and initialize current db
+
+	// discard and initialize current db
 	public void initdb() {
-		mDb.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
+		// 作成
+		mDb.execSQL("drop table if exists " + DATABASE_TABLE);
 		mDb.execSQL(DATABASE_CREATE);
-		//あと初期データの投入
-		for(String iv2[] : iv){
+		// あと初期データの投入
+		for (String iv2[] : initval) {
 			ContentValues initialValues = new ContentValues();
 			initialValues.put(KEY_TITLE, iv2[0]);
 			initialValues.put(KEY_URL, iv2[1]);
-			initialValues.put(KEY_APP, iv2[2]);
-			initialValues.put(KEY_ACTIVITY, iv2[3]);
-			initialValues.put(KEY_ORDER, iv2[4]);
+			initialValues.put(KEY_ORDER, iv2[2]);
 			mDb.insert(DATABASE_TABLE, null, initialValues);
 		}
 		return;
 	}
-	
 
-	
 }

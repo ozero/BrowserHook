@@ -5,4 +5,7 @@
     <!-- http://developer.android.com/intl/zh-TW/reference/android/R.styleable.html#Theme -->
     <item name="android:windowBackground">@drawable/my_background</item> 
     </style>
+    
+    
+    
 </resources>
