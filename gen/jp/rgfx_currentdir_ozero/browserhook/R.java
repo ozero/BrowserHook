@@ -15,23 +15,23 @@ public final class R {
         public static final int my_background=0x7f020001;
     }
     public static final class id {
-        public static final int ButtonConvert=0x7f07000a;
-        public static final int ButtonDirect=0x7f070006;
+        public static final int ButtonConvert=0x7f070007;
+        public static final int ButtonDirect=0x7f070003;
         public static final int ButtonOK=0x7f070018;
-        public static final int ButtonSetting=0x7f07000c;
+        public static final int ButtonSetting=0x7f070009;
         public static final int EditTextACTV=0x7f070015;
         public static final int EditTextAPP=0x7f070013;
         public static final int EditTextORDER=0x7f070017;
         public static final int EditTextTITLE=0x7f07000f;
         public static final int EditTextURL=0x7f070011;
-        public static final int LinearLayoutConvert=0x7f070008;
-        public static final int LinearLayoutDirect=0x7f070004;
-        public static final int LinearLayoutSetting=0x7f07000b;
+        public static final int LinearLayoutConvert=0x7f070005;
+        public static final int LinearLayoutDirect=0x7f070001;
+        public static final int LinearLayoutSetting=0x7f070008;
         public static final int ScrollView01=0x7f07000d;
-        public static final int SpinnerBrowsers=0x7f070005;
-        public static final int SpinnerConverters=0x7f070009;
-        public static final int TVbrowsers=0x7f070003;
-        public static final int TVconverters=0x7f070007;
+        public static final int SpinnerBrowsers=0x7f070002;
+        public static final int SpinnerConverters=0x7f070006;
+        public static final int TVbrowsers=0x7f070000;
+        public static final int TVconverters=0x7f070004;
         public static final int TextViewACTV=0x7f070014;
         public static final int TextViewAPP=0x7f070012;
         public static final int TextViewORDER=0x7f070016;
@@ -41,17 +41,18 @@ public final class R {
         public static final int menu_import=0x7f07001b;
         public static final int menu_initialize=0x7f07001c;
         public static final int menu_insert=0x7f070019;
-        public static final int text0=0x7f070000;
-        public static final int text1=0x7f070002;
-        public static final int text99=0x7f070001;
+        public static final int text0=0x7f07000a;
+        public static final int text1=0x7f07000c;
+        public static final int text99=0x7f07000b;
     }
     public static final class layout {
-        public static final int item=0x7f030000;
-        public static final int main=0x7f030001;
-        public static final int settingeditor=0x7f030002;
+        public static final int converterlist=0x7f030000;
+        public static final int converterlistitem=0x7f030001;
+        public static final int main=0x7f030002;
+        public static final int settingeditor=0x7f030003;
     }
     public static final class menu {
-        public static final int main=0x7f060000;
+        public static final int converterlist=0x7f060000;
     }
     public static final class string {
         public static final int ButtonCancel=0x7f040007;

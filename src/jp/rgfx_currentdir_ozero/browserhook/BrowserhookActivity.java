@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,9 +14,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -31,12 +27,7 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 	static Uri URI = null;
 	static Boolean IS_STANDALONE = true;
 	static String TAG = "bh";
-	private static final int ACTIVITY_CREATE = 0;
 	private static final int ACTIVITY_EDIT = 1;
-	private static final int INSERT_ID = R.id.menu_insert;
-	private static final int EXPORT_ID = R.id.menu_export;
-	private static final int IMPORT_ID = R.id.menu_import;
-	private static final int INITIALIZE_ID = R.id.menu_initialize;
 	private static ArrayList<HashMap<String, String>> SUITABLEAPPS = new ArrayList<HashMap<String, String>>();
 	private static ArrayList<HashMap<String, String>> CONVERTERS = new ArrayList<HashMap<String, String>>();
 
@@ -50,15 +41,20 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 	// private Spinner wdgSpinnerConverters = (Spinner)
 	// findViewById(R.id.SpinnerConverters);
 	private Converter mDbHelper;
-
+	
+	// //////////////////////////////////////////////////////////////////////
+	// GUI event dispatcher: activity
+		
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		
 		// start
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		mDbHelper = new Converter(this);
 		mDbHelper.open();
+		
 		//bind
 		wdgDirectBtn = (Button) findViewById(R.id.ButtonDirect);
 		wdgDirectBtn.setOnClickListener(this);
@@ -82,8 +78,8 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 			setTitle(R.string.apptitle_main_standalone);// タイトルを設定
 			IS_STANDALONE = true;
 			Log.d(TAG, "oc:i:none");
-			buildBrowserSpinner();
-			buildConvertSpinner();
+			startConverterlistActivity();
+			finish();
 		}
 		return;
 	}
@@ -98,7 +94,7 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 
 
 	// //////////////////////////////////////////////////////////////////////
-	// GUI event dispatcher
+	// GUI event dispatcher: widget
 		
 	// ボタンクリックのディスパッチ
 	public void onClick(View v) {
@@ -134,41 +130,76 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 		}
 		return;
 	}
+	
+	
+	
+	// //////////////////////////////////////////////////////////////////////
+	// GUI transition
 
-	// メニューを作成
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		// メニューインフレーターを取得
-		MenuInflater inflater = getMenuInflater();
-		// xmlのリソースファイルを使用してメニューにアイテムを追加
-		inflater.inflate(R.menu.main, menu);
-		// できたらtrueを返す
-		return true;
+	// 設定画面を開く
+	private void startConverterlistActivity() {
+		Log.d(TAG, "scla:openSetting:");
+		Intent i = new Intent(this, SettingActivity.class);
+		// クリックされた行のIDをintentに埋める。これで項目ID取れるのなー
+		startActivityForResult(i, ACTIVITY_EDIT);
+		Log.d(TAG, "scla:launch setting activity.");
+		return;
 	}
-
-	// メニューがクリックされた際
-	@Override
-	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		switch (item.getItemId()) {
-		case INSERT_ID:
-			createItem();
-			return true;
-		case IMPORT_ID:
-			alertdialog("sorry", "not impremented yet.");
-			return true;
-		case EXPORT_ID:
-			alertdialog("sorry", "not impremented yet.");
-			return true;
-		case INITIALIZE_ID:
-			initializeItem();
-			return true;
-		}
-
-		return super.onMenuItemSelected(featureId, item);
-	}
+//
+//	// 項目を新規作成
+//	private void createItem() {
+//		Intent i = new Intent(this, SettingActivity.class);
+//		startActivityForResult(i, ACTIVITY_CREATE);
+//	}
+//
+//	// 項目を初期化
+//	private void initializeItem() {
+//		// confirmダイアログを出す
+//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//		builder.setTitle(R.string.alert_init_title);
+//		builder.setMessage(R.string.alert_init_msg);
+//		builder.setPositiveButton("OK",
+//				new android.content.DialogInterface.OnClickListener() {
+//					public void onClick(android.content.DialogInterface dialog,
+//							int whichButton) {
+//						// OKなら
+//						setResult(RESULT_OK);
+//						mDbHelper.initdb();
+//						// dispSelectDialog();
+//					}
+//				});
+//		builder.setNegativeButton("Cancel",
+//				new android.content.DialogInterface.OnClickListener() {
+//					public void onClick(android.content.DialogInterface dialog,
+//							int whichButton) {
+//						// キャンセルなら
+//						setResult(RESULT_CANCELED);
+//						return;
+//					}
+//				});
+//		builder.create();
+//		builder.show();
+//	}
+//
+//
+//	// メッセージを出す
+//	private void alertdialog(String title, String msg) {
+//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//		builder.setTitle(title);
+//		builder.setMessage(msg);
+//		builder.setPositiveButton("OK",
+//				new android.content.DialogInterface.OnClickListener() {
+//					public void onClick(android.content.DialogInterface dialog,
+//							int whichButton) {
+//						setResult(RESULT_OK);
+//					}
+//				});
+//		builder.create();
+//		builder.show();
+//	}
 
 	// //////////////////////////////////////////////////////////////////////
+	// misc logic
 
 	// intent投げ先activitiesをspinnerに積む処理
 	private void buildBrowserSpinner() {
@@ -311,70 +342,7 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 		Log.d(TAG, "successfully launch browser.");
 		return;
 	}
-
-	// 設定画面を開く
-	private void startSettingActivity(long id) {
-		Log.d(TAG, "ssa:openSetting:" + id);
-		Intent i = new Intent(this, SettingActivity.class);
-		// クリックされた行のIDをintentに埋める。これで項目ID取れるのなー
-		i.putExtra(Converter.KEY_ROWID, id);
-		startActivityForResult(i, ACTIVITY_EDIT);
-		Log.d(TAG, "ssa:launch setting activity.");
-		return;
-	}
-
-	// 項目を新規作成
-	private void createItem() {
-		Intent i = new Intent(this, SettingActivity.class);
-		startActivityForResult(i, ACTIVITY_CREATE);
-	}
-
-	// 項目を初期化
-	private void initializeItem() {
-		// confirmダイアログを出す
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.alert_init_title);
-		builder.setMessage(R.string.alert_init_msg);
-		builder.setPositiveButton("OK",
-				new android.content.DialogInterface.OnClickListener() {
-					public void onClick(android.content.DialogInterface dialog,
-							int whichButton) {
-						// OKなら
-						setResult(RESULT_OK);
-						mDbHelper.initdb();
-						// dispSelectDialog();
-					}
-				});
-		builder.setNegativeButton("Cancel",
-				new android.content.DialogInterface.OnClickListener() {
-					public void onClick(android.content.DialogInterface dialog,
-							int whichButton) {
-						// キャンセルなら
-						setResult(RESULT_CANCELED);
-						return;
-					}
-				});
-		builder.create();
-		builder.show();
-	}
-
-	// TODO:エクスポート処理
-	// TODO:インポート処理
-
-	// メッセージを出す
-	private void alertdialog(String title, String msg) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(title);
-		builder.setMessage(msg);
-		builder.setPositiveButton("OK",
-				new android.content.DialogInterface.OnClickListener() {
-					public void onClick(android.content.DialogInterface dialog,
-							int whichButton) {
-						setResult(RESULT_OK);
-					}
-				});
-		builder.create();
-		builder.show();
-	}
+	
+	
 
 }
