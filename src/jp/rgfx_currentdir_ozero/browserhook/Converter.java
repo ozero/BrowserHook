@@ -148,6 +148,13 @@ public class Converter {
 		return mDb.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
 	}
 
+	
+	public boolean deleteAllItem() {
+		return mDb.delete(DATABASE_TABLE, "", null) > 0;
+	}
+
+
+	
 	/**
 	 * Return a Cursor over the list of all items in the database
 	 * 

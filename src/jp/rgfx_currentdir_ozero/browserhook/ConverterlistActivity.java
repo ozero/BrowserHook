@@ -1,9 +1,13 @@
 package jp.rgfx_currentdir_ozero.browserhook;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -102,7 +106,7 @@ public class ConverterlistActivity extends ListActivity {
 			createItem();
 			return true;
 		case IMPORT_ID:
-			alertdialog("sorry", "not impremented yet");
+			//alertdialog("sorry", "not impremented yet");
 			importItem();
 			return true;
 		case EXPORT_ID:
@@ -197,22 +201,24 @@ public class ConverterlistActivity extends ListActivity {
 	}
 
 
-	// メッセージを出す
-	private void alertdialog(String title, String msg) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(title);
-		builder.setMessage(msg);
-		builder.setPositiveButton("OK",
-				new android.content.DialogInterface.OnClickListener() {
-					public void onClick(android.content.DialogInterface dialog,
-							int whichButton) {
-						setResult(RESULT_OK);
-					}
-				});
-		builder.create();
-		builder.show();
-	}
+//	// メッセージを出す
+//	private void alertdialog(String title, String msg) {
+//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//		builder.setTitle(title);
+//		builder.setMessage(msg);
+//		builder.setPositiveButton("OK",
+//				new android.content.DialogInterface.OnClickListener() {
+//					public void onClick(android.content.DialogInterface dialog,
+//							int whichButton) {
+//						setResult(RESULT_OK);
+//					}
+//				});
+//		builder.create();
+//		builder.show();
+//	}
 	
+	
+	//変換アイテムのエクスポート
 	private void exportItem() {
 		Log.d(TAG, "exportItem");
 		String outstr = "";
@@ -280,8 +286,85 @@ public class ConverterlistActivity extends ListActivity {
 
 		return;
 	}
+	
+	
 	// TODO:インポート処理
 	private void importItem() {
+		Log.d(TAG, "importItem:");
+		ArrayList<String[]> getstr=new ArrayList<String[]>();
+		
+		String strPathSD = Environment.getExternalStorageDirectory().toString();
+	    String strPathDst = 
+	    	strPathSD	+ "/data/" + this.getPackageName() + "/converters.txt";
+	    File pathDst = new File(strPathDst);
+	    
+	    boolean isAnyValidLine=false;
+        try {
+			FileReader fr = new FileReader(pathDst);
+			BufferedReader br = new BufferedReader(fr,1024); 
+			Log.d(TAG, "iI:br");
+			
+			//read
+			try {
+				String line;
+				line = br.readLine();
+			    while ( line != null) {
+					Log.d(TAG, "iI:line");
+			    	String[] tmp = line.split("\t");
+			    	if(tmp.length == 3){
+						//check
+				    	getstr.add(tmp);
+				    	isAnyValidLine = true;
+						Log.d(TAG, "iI:line:ok");
+			    	}
+			    	line = br.readLine();
+			    }
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if(!isAnyValidLine){
+				Log.d(TAG, "iI:noline");
+		        //エラーメッセージ
+		        Toast.makeText(
+		        		this, "No valid TSV.", Toast.LENGTH_LONG
+		        	).show();  
+				return;
+			}
+			
+			//truncate
+			mDbHelper.deleteAllItem();
+			Log.d(TAG, "iI:truncate");
+			
+			//insert
+			for(int i=0;i<getstr.size();i++){
+				Log.d(TAG, "iI:insert:" + i + getstr.get(i)[0]
+			    +getstr.get(i)[1]
+                +getstr.get(i)[2]);
+				mDbHelper.createItem(
+						getstr.get(i)[0], 
+						getstr.get(i)[1], 
+						getstr.get(i)[2]);
+			}
+			
+			//rebuild gui
+			buildListView();
+	        Toast.makeText(
+	        		this, "Setting was restored.", Toast.LENGTH_LONG
+	        	).show();  
+
+
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+	        //エラーメッセージ
+	        Toast.makeText(
+	        		this, "Do Export First. File Not Found.", Toast.LENGTH_LONG
+	        	).show();  
+			e.printStackTrace();
+		}
+	    
 		return;
 	}
 	
