@@ -29,7 +29,7 @@ public class Converter {
 	public static final String KEY_TITLE = "title";
 	public static final String KEY_URL = "url";
 	public static final String KEY_ORDER = "ord";
-	public static final String KEY_ROWID = "_id";
+	public final static String KEY_ROWID = "_id";
 
 	private static final String TAG = "Converter";
 	private DatabaseHelper mDbHelper;
@@ -49,9 +49,9 @@ public class Converter {
 			+ "ord text not null);";
 
 	public static String initval[][] = {
-			{ "pc2m", "http://rg0020.ddo.jp/p/?_k_c=200&_k_u=", "20" },
-			{ "bing", "http://d2c.infogin.com/ja-jp/lnk000/=", "30" },
-			{ "GoogleWT", "http://d2c.infogin.com/ja-jp/lnk000/=", "30" }, };
+			{ "pc2m", "http://rg0020.ddo.jp/p/?_k_c=200&_k_u=", "10" },
+			{ "bing", "http://d2c.infogin.com/ja-jp/lnk000/=", "20" },
+			{ "GoogleWT", "http://www.google.co.jp/gwt/x?u=", "30" }, };
 
 	// 呼び出し元Activityへの参照をContextとして持ち回りできるように
 	private final Context mCtx;

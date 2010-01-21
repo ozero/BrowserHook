@@ -7,6 +7,7 @@
 
     <LinearLayout android:layout_width="fill_parent"
       android:layout_height="wrap_content" android:orientation="vertical">
+
       <TextView android:text="@string/TextViewTITLE" android:id="@+id/TextViewTITLE"
         android:layout_width="wrap_content" android:layout_height="wrap_content" />
       <EditText android:text="@+id/EditTextTITLE" android:id="@+id/EditTextTITLE"
@@ -19,29 +20,6 @@
         android:layout_width="fill_parent" android:layout_height="wrap_content"
         android:typeface="monospace" />
 
-      <TextView android:text="@string/TextViewAPP" android:id="@+id/TextViewAPP"
-        android:layout_width="wrap_content" android:layout_height="wrap_content" />
-      <EditText android:text="@+id/EditTextAPP" android:id="@+id/EditTextAPP"
-        android:layout_width="fill_parent" android:layout_height="wrap_content"
-        android:typeface="monospace" />
-
-      <TextView android:text="@string/TextViewACTV" android:id="@+id/TextViewACTV"
-        android:layout_width="wrap_content" android:layout_height="wrap_content" />
-      <EditText android:text="@+id/EditTextACTV" android:id="@+id/EditTextACTV"
-        android:layout_width="fill_parent" android:layout_height="wrap_content"
-        android:typeface="monospace" />
-
-      <TextView android:text="@string/TextViewORDER" android:id="@+id/TextViewORDER"
-        android:layout_width="wrap_content" android:layout_height="wrap_content" />
-      <EditText android:text="@+id/EditTextORDER" android:id="@+id/EditTextORDER"
-        android:layout_width="fill_parent" android:layout_height="wrap_content"
-        android:numeric="integer" />
-
-      <TextView android:text="@string/TextViewORDER" android:id="@+id/TextViewORDER"
-        android:layout_width="wrap_content" android:layout_height="wrap_content" />
-      <EditText android:text="@+id/EditTextORDER" android:id="@+id/EditTextORDER"
-        android:layout_width="fill_parent" android:layout_height="wrap_content"
-        android:numeric="integer" />
 
       <TextView android:text="@string/TextViewORDER" android:id="@+id/TextViewORDER"
         android:layout_width="wrap_content" android:layout_height="wrap_content" />

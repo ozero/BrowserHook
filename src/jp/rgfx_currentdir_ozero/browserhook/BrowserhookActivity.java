@@ -74,8 +74,6 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 			buildBrowserSpinner();
 			buildConvertSpinner();
 		} else {
-			URI = Uri.parse("http://cnn.com");
-			setTitle(R.string.apptitle_main_standalone);// タイトルを設定
 			IS_STANDALONE = true;
 			Log.d(TAG, "oc:i:none");
 			startConverterlistActivity();
@@ -127,6 +125,7 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 			startBrowserApp(cnv,app[0], app[1]);
 		} else if (v == wdgSettingBtn) {
 			Log.d(TAG, "click:setting");
+			startConverterlistActivity();
 		}
 		return;
 	}
@@ -139,64 +138,12 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 	// 設定画面を開く
 	private void startConverterlistActivity() {
 		Log.d(TAG, "scla:openSetting:");
-		Intent i = new Intent(this, SettingActivity.class);
+		Intent i = new Intent(this,ConverterlistActivity.class);
 		// クリックされた行のIDをintentに埋める。これで項目ID取れるのなー
 		startActivityForResult(i, ACTIVITY_EDIT);
 		Log.d(TAG, "scla:launch setting activity.");
 		return;
 	}
-//
-//	// 項目を新規作成
-//	private void createItem() {
-//		Intent i = new Intent(this, SettingActivity.class);
-//		startActivityForResult(i, ACTIVITY_CREATE);
-//	}
-//
-//	// 項目を初期化
-//	private void initializeItem() {
-//		// confirmダイアログを出す
-//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//		builder.setTitle(R.string.alert_init_title);
-//		builder.setMessage(R.string.alert_init_msg);
-//		builder.setPositiveButton("OK",
-//				new android.content.DialogInterface.OnClickListener() {
-//					public void onClick(android.content.DialogInterface dialog,
-//							int whichButton) {
-//						// OKなら
-//						setResult(RESULT_OK);
-//						mDbHelper.initdb();
-//						// dispSelectDialog();
-//					}
-//				});
-//		builder.setNegativeButton("Cancel",
-//				new android.content.DialogInterface.OnClickListener() {
-//					public void onClick(android.content.DialogInterface dialog,
-//							int whichButton) {
-//						// キャンセルなら
-//						setResult(RESULT_CANCELED);
-//						return;
-//					}
-//				});
-//		builder.create();
-//		builder.show();
-//	}
-//
-//
-//	// メッセージを出す
-//	private void alertdialog(String title, String msg) {
-//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//		builder.setTitle(title);
-//		builder.setMessage(msg);
-//		builder.setPositiveButton("OK",
-//				new android.content.DialogInterface.OnClickListener() {
-//					public void onClick(android.content.DialogInterface dialog,
-//							int whichButton) {
-//						setResult(RESULT_OK);
-//					}
-//				});
-//		builder.create();
-//		builder.show();
-//	}
 
 	// //////////////////////////////////////////////////////////////////////
 	// misc logic
@@ -232,6 +179,12 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 					public void onNothingSelected(AdapterView<?> parent) {
 					}
 				});
+		
+		//スピナー表示時タイトル
+		wdgSpinnerBrowsers.setPrompt(
+				(CharSequence)getString(R.string.spinnerPrompt_browser)
+				);
+		
 		return;
 	}
 
@@ -321,7 +274,12 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 					public void onNothingSelected(AdapterView<?> parent) {
 					}
 				});
-
+		
+		//スピナー表示時タイトル
+		wdgSpinnerConverters.setPrompt(
+				(CharSequence)getString(R.string.spinnerPrompt_converter)		
+		);
+		
 		Log.d(TAG, "init:dialog:show:done");
 		return;
 	}

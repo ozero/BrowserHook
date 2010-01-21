@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-	<string name="app_name">BrowserHook</string>
-	<string name="TextViewTITLE">name</string>
-	<string name="TextViewURL">convert gateway url</string>
-	<string name="TextViewAPP">App name to open URL</string>
-  <string name="TextViewACTV">Activity to receive intent</string>
-  <string name="TextViewORDER">order to show this item</string>
+<string name="app_name">BrowserHook</string>
 
-	<string name="ButtonOK">Save</string>
-	<string name="ButtonCancel">Cancel</string>
-	
-	<string name="ButtonDirect">go direct</string>
-	<string name="ButtonConvert">convert</string>
-	<string name="ButtonSetting">setting</string>
-	
-	<string name="menu_insert">Add item</string>
-	<string name="menu_delete">Delete item</string>
-	<string name="menu_edit">Edit item</string>
-  <string name="menu_import">SD:import</string>
-  <string name="menu_export">SD:export</string>
-  <string name="menu_initialize">Initialize items.</string>
+<string name="TextViewTITLE">Conversion service name</string>
+<string name="TextViewURL">convert gateway url</string>
+<string name="TextViewAPP">App name to open URL</string>
+<string name="TextViewACTV">Activity to receive intent</string>
+<string name="TextViewORDER">order to show this item</string>
 
-	<string name="apptitle_main">conv.</string>
-	<string name="apptitle_main_standalone">please select item to edit.</string>
-	<string name="apptitle_edit">edit the conversion item.</string>
+<string name="ButtonOK">Save</string>
+<string name="ButtonCancel">Cancel</string>
+<string name="ButtonDirect">go direct</string>
+<string name="ButtonConvert">convert</string>
+<string name="ButtonSetting">setting</string>
+
+<string name="menu_insert">Add item</string>
+<string name="menu_delete">Delete item</string>
+<string name="menu_edit">Edit item</string>
+<string name="menu_import">SD:import</string>
+<string name="menu_export">SD:export</string>
+<string name="menu_initialize">Initialize items.</string>
+
+<string name="alert_init_title">項目の初期化</string>
+<string name="alert_init_msg">項目を初期化していいですか？</string>
+
+<string name="spinnerPrompt_browser">Browsers</string>
+<string name="spinnerPrompt_converter">Converters</string>
+
+<string name="apptitle_main">conv.</string>
+<string name="apptitle_main_standalone">please select item to edit.</string>
+<string name="apptitle_edit">edit the conversion item.</string>
+
 </resources>
