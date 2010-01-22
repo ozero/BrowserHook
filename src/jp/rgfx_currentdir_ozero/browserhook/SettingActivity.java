@@ -6,6 +6,7 @@ package jp.rgfx_currentdir_ozero.browserhook;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,16 +40,19 @@ public class SettingActivity extends Activity {
         //バックグラウンドから帰ってきた際に行IDを知る
         mRowId = savedInstanceState != null ? savedInstanceState.getLong(Converter.KEY_ROWID) 
                 							: null;
+		Log.d("hoge","aa");
         //インテントを受け取って編集する行IDを知る
 		if (mRowId == null) {
-			Bundle extras = getIntent().getExtras();            
+			Bundle extras = getIntent().getExtras();
 			mRowId = extras != null ? extras.getLong(Converter.KEY_ROWID) 
-									: null;
+					: null;
+			if (mRowId == null) {
+				Log.d("hoge","null");
+                saveState();
+			}
 		}
-
 		//ウィジェットに対象データを表示する
 		populateFields();
-		
 		//イベントの設定
         confirmButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
@@ -96,9 +100,11 @@ public class SettingActivity extends Activity {
         String order = mOrderText.getText().toString();
 
         if (mRowId == null) {
+        	Log.d("save","insert");
             long id = mDbHelper.createItem("new item", "", "10");
             if (id > 0) {
                 mRowId = id;
+            	Log.d("save","insert:ok");
             }
         } else {
             mDbHelper.updateItem(mRowId, title, body, order);

@@ -17,13 +17,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class ConverterlistActivity extends ListActivity {
 	static Uri URI = null;
@@ -35,6 +38,7 @@ public class ConverterlistActivity extends ListActivity {
 	private static final int EXPORT_ID = R.id.menu_export;
 	private static final int IMPORT_ID = R.id.menu_import;
 	private static final int INITIALIZE_ID = R.id.menu_initialize;
+	private static final int DELETE_ID = 0;
 	private Converter mDbHelper;
 	
 	// //////////////////////////////////////////////////////////////////////
@@ -53,10 +57,10 @@ public class ConverterlistActivity extends ListActivity {
 		//bind widget with method
 //		wdgDirectBtn = (Button) findViewById(R.id.ButtonDirect);
 //		wdgDirectBtn.setOnClickListener(this);
-		
+        
 		//build gui
 		buildListView();
-		
+		registerForContextMenu(getListView());
 		return;
 	}
 
@@ -70,22 +74,8 @@ public class ConverterlistActivity extends ListActivity {
 
 
 	// //////////////////////////////////////////////////////////////////////
-	// GUI event dispatcher : widget
+	// GUI defs
 	
-	// リストアイテムがクリックされた際の処理
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		//選択した変換アイテムの編集画面を開く
-		Log.d(TAG, "onListItemClick():" + id);
-		editItem(id);
-		return;
-	}
-	
-	
-	// ボタンクリックのディスパッチ
-	public void onClick(View v) {
-		return;
-	}
-
 	// メニューを作成
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -96,6 +86,31 @@ public class ConverterlistActivity extends ListActivity {
 		inflater.inflate(R.menu.converterlist, menu);
 		// できたらtrueを返す
 		return true;
+	}
+
+	//右クリックメニューの設定
+	public void onCreateContextMenu(
+			ContextMenu menu, View v,
+	        ContextMenuInfo menuInfo) {
+	    super.onCreateContextMenu(menu, v, menuInfo);
+	    menu.add(0, DELETE_ID, 0, R.string.menu_delete);
+		return;
+	}
+	
+	// //////////////////////////////////////////////////////////////////////
+	// GUI event dispatcher : widget
+	
+	// リストアイテムがクリックされた際の処理
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		//選択した変換アイテムの編集画面を開く
+		Log.d(TAG, "onListItemClick():" + id);
+		editItem(id);
+		return;
+	}
+		
+	// ボタンクリックのディスパッチ
+	public void onClick(View v) {
+		return;
 	}
 
 	// メニューがクリックされた際
@@ -120,6 +135,31 @@ public class ConverterlistActivity extends ListActivity {
 		return super.onMenuItemSelected(featureId, item);
 	}
 	
+	//右クリック時イベントの設定
+	public boolean onContextItemSelected(MenuItem item) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	//builder.setTitle("タイトル");
+    	
+	    switch(item.getItemId()) {
+	    case DELETE_ID:
+	        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+	        mDbHelper.deleteItem(info.id);
+	        buildListView();
+	        return true;
+	    }
+	    
+    	builder.setPositiveButton("OK",new android.content.DialogInterface.OnClickListener() {
+	        public void onClick(android.content.DialogInterface dialog,int whichButton) {
+	            setResult(RESULT_OK);
+	        }
+	    });
+    	builder.create();
+    	builder.show();
+
+	    
+	    return super.onContextItemSelected(item);
+	}
+	
 	// //////////////////////////////////////////////////////////////////////
 	// GUI traisition
 
@@ -129,7 +169,6 @@ public class ConverterlistActivity extends ListActivity {
 		Intent i = new Intent(this, SettingActivity.class);
 		// クリックされた行のIDをintentに埋める。これで項目ID取れるのなー
 		i.putExtra(Converter.KEY_ROWID, id);
-		i.putExtra("mode", "edit");
 		startActivityForResult(i, ACTIVITY_EDIT);
 		Log.d(TAG, "ssa:launch setting activity.");
 		return;
@@ -139,7 +178,6 @@ public class ConverterlistActivity extends ListActivity {
 	private void createItem() {
 		Log.d(TAG, "ssa:createItem");
 		Intent i = new Intent(this, SettingActivity.class);
-		i.putExtra("mode", "new");
 		startActivityForResult(i, ACTIVITY_CREATE);
 		Log.d(TAG, "ssa:launch setting activity.");
 		return;
@@ -165,7 +203,7 @@ public class ConverterlistActivity extends ListActivity {
 		SimpleCursorAdapter notes = new SimpleCursorAdapter(this,
 				R.layout.converterlistitem, itemCursor, from, to);
 		setListAdapter(notes);
-
+		
 		return;
 	}
 
@@ -185,6 +223,7 @@ public class ConverterlistActivity extends ListActivity {
 						mDbHelper.initdb();
 						//build gui
 						buildListView();
+					
 					}
 				});
 		builder.setNegativeButton("Cancel",
@@ -198,6 +237,8 @@ public class ConverterlistActivity extends ListActivity {
 				});
 		builder.create();
 		builder.show();
+		
+		
 	}
 
 

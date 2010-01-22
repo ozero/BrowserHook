@@ -2,9 +2,9 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 <string name="app_name">BrowserHook</string>
 
-<string name="TextViewTITLE">URLを変換するサービス名</string>
+<string name="TextViewTITLE">サービス:</string>
 <string name="TextViewURL">変換URL</string>
-<string name="TextViewAPP">URLを開くブラウザ名</string>
+<string name="TextViewAPP">ブラウザ:</string>
 <string name="TextViewACTV">インテントを受け取るアクティビティ</string>
 <string name="TextViewORDER">この項目を何番目に表示するか</string>
 
@@ -14,12 +14,12 @@
 <string name="ButtonConvert">変換して表示する</string>
 <string name="ButtonSetting">設定</string>
 
-<string name="menu_insert">変換項目を追加する</string>
-<string name="menu_delete">一覧から削除する</string>
-<string name="menu_edit">この項目を編集する</string>
+<string name="menu_insert">追加</string>
+<string name="menu_delete">削除</string>
+<string name="menu_edit">編集</string>
 <string name="menu_import">SDから読み込み</string>
 <string name="menu_export">SDへ書き出し</string>
-<string name="menu_initialize">項目の初期化</string>
+<string name="menu_initialize">初期化</string>
 
 <string name="alert_init_title">項目の初期化</string>
 <string name="alert_init_msg">項目を初期化していいですか？</string>

@@ -14,15 +14,15 @@
 <string name="ButtonConvert">convert</string>
 <string name="ButtonSetting">setting</string>
 
-<string name="menu_insert">Add item</string>
-<string name="menu_delete">Delete item</string>
-<string name="menu_edit">Edit item</string>
+<string name="menu_insert">Add</string>
+<string name="menu_delete">Delete</string>
+<string name="menu_edit">Edit</string>
 <string name="menu_import">SD:import</string>
 <string name="menu_export">SD:export</string>
-<string name="menu_initialize">Initialize items.</string>
+<string name="menu_initialize">Initialize</string>
 
-<string name="alert_init_title">項目の初期化</string>
-<string name="alert_init_msg">項目を初期化していいですか？</string>
+<string name="alert_init_title">Initialize</string>
+<string name="alert_init_msg">Initialize All items. Are you sure?</string>
 
 <string name="spinnerPrompt_browser">Browsers</string>
 <string name="spinnerPrompt_converter">Converters</string>

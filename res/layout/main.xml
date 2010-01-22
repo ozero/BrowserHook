@@ -3,77 +3,76 @@
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 
-	<TextView android:id="@+id/TVbrowsers"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-    android:text="@string/TextViewAPP"
-		android:textColor="#f0f0f0"
-		android:background="#666666"
-		android:textStyle="bold"
-		 />
-	<LinearLayout android:id="@+id/LinearLayoutDirect"
-		android:orientation="vertical"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:padding="8dp"
-		>
-		<Spinner android:id="@+id/SpinnerBrowsers"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content" />
-		<Button
-			android:id="@+id/ButtonDirect"
-			android:text="@string/ButtonDirect"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			/>
-	</LinearLayout>
+  <LinearLayout android:id="@+id/LinearLayoutDirect"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
 
-	<TextView android:id="@+id/TVconverters"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-    android:text="@string/TextViewTITLE"
-		android:textColor="#ccff66"
-		android:background="#555555"
-		android:textStyle="bold"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-		 />
-	<LinearLayout android:id="@+id/LinearLayoutConvert"
-		android:orientation="vertical"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:background="#d0d0d0"
-		android:padding="8dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-		>
-		<Spinner android:id="@+id/SpinnerConverters"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"></Spinner>
-		<Button
-			android:id="@+id/ButtonConvert"
-			android:text="@string/ButtonConvert"
-			android:layout_width="fill_parent"
+	  <LinearLayout android:id="@+id/LinearLayoutDirect"
+	    android:orientation="vertical"
+      android:layout_weight="1"
+      android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    >
+			<TextView android:id="@+id/TVbrowsers"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+		    android:text="@string/TextViewAPP"
+				android:textColor="#f0f0f0"
+				android:background="#666666"
+				android:textStyle="bold"
+				 />
+			<Spinner android:id="@+id/SpinnerBrowsers"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+		</LinearLayout>
+	
+		<LinearLayout android:id="@+id/LinearLayoutConvert"
+			android:orientation="vertical"
+      android:layout_weight="1"
+      android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			/>
-	</LinearLayout>
+	    android:layout_marginLeft="4dp"
+			>
+		  <TextView android:id="@+id/TVconverters"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/TextViewTITLE"
+        android:textColor="#f0f0f0"
+        android:background="#666666"
+		    android:textStyle="bold"
+		     />
+			<Spinner android:id="@+id/SpinnerConverters"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"></Spinner>
+		</LinearLayout>
 
-	<LinearLayout android:id="@+id/LinearLayoutSetting"
-		android:orientation="vertical"
-		android:layout_width="fill_parent"
+  </LinearLayout>
+
+  <Button
+    android:id="@+id/ButtonDirect"
+    android:text="@string/ButtonDirect"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="20dp"
+    />
+  <Button
+    android:id="@+id/ButtonConvert"
+    android:text="@string/ButtonConvert"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    />
+	<Button
+		android:id="@+id/ButtonSetting"
+		android:text="@string/ButtonSetting"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:padding="8dp"
-		>
-		<Button
-			android:id="@+id/ButtonSetting"
-			android:text="@string/ButtonSetting"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			/>
-	</LinearLayout>
+		android:layout_gravity="center_horizontal"
+    android:layout_marginTop="20dp"
+		/>
 
 </LinearLayout>
 

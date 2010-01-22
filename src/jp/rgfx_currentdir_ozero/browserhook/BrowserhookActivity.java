@@ -137,11 +137,11 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 
 	// 設定画面を開く
 	private void startConverterlistActivity() {
-		Log.d(TAG, "scla:openSetting:");
+		//Log.d(TAG, "scla:openSetting:");
 		Intent i = new Intent(this,ConverterlistActivity.class);
 		// クリックされた行のIDをintentに埋める。これで項目ID取れるのなー
 		startActivityForResult(i, ACTIVITY_EDIT);
-		Log.d(TAG, "scla:launch setting activity.");
+		//Log.d(TAG, "scla:launch setting activity.");
 		return;
 	}
 
@@ -191,7 +191,7 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 	// intentに適したactivityを一覧で引いてくる処理。
 	private ArrayList<HashMap<String, String>> getSuitableActivities() {
 		ArrayList<HashMap<String, String>> apps = new ArrayList<HashMap<String, String>>();
-
+		
 		//
 		final PackageManager pm = this.getPackageManager();
 		final Intent intent = new Intent();
@@ -213,25 +213,26 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 			ResolveInfo info = list.get(i);
 			//
 			appinfo.put("label", (String) info.loadLabel(pm));
-			Log.d(TAG, "gsa:label:" + (String) info.loadLabel(pm));
+			//Log.d(TAG, "gsa:label:" + (String) info.loadLabel(pm));
 			//
 			appinfo.put("packageName",
 					(String) info.activityInfo.applicationInfo.packageName);
-			Log.d(TAG, "gsa:pName:"
-					+ (String) info.activityInfo.applicationInfo.packageName);
+			//Log.d(TAG, "gsa:pName:"
+			//		+ (String) info.activityInfo.applicationInfo.packageName);
 			//
 			appinfo.put("activityInfo", (String) info.activityInfo.name);
-			Log.d(TAG, "gsa:aName:" + (String) info.activityInfo.name);
+			//Log.d(TAG, "gsa:aName:" + (String) info.activityInfo.name);
 			//
 			apps.add(appinfo);
 		}
+		
 		return apps;
 
 	}
 
 	// 変換方法一覧spinnerに変換候補を流し込む
 	private void buildConvertSpinner() {
-		Log.d(TAG, "init:dialog");
+		//Log.d(TAG, "init:dialog");
 
 		// アダプターを設定します
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -288,9 +289,9 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 	private void startBrowserApp(String cv,String pkg, String act) {
 		Log.d(TAG, "sba:cv:" + cv);
 		URI = Uri.parse(cv + URI.toString());
-		Log.d(TAG, "sba:urlmod:" + URI);
-		Log.d(TAG, "sba:pkg:" + pkg);
-		Log.d(TAG, "sba:act:" + act);
+//		Log.d(TAG, "sba:urlmod:" + URI);
+//		Log.d(TAG, "sba:pkg:" + pkg);
+//		Log.d(TAG, "sba:act:" + act);
 
 		ComponentName comp = new ComponentName(pkg,act);
 		Intent intent = new Intent(Intent.ACTION_VIEW, URI);

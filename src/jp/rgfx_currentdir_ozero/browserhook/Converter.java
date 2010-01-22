@@ -49,9 +49,11 @@ public class Converter {
 			+ "ord text not null);";
 
 	public static String initval[][] = {
-			{ "pc2m", "http://rg0020.ddo.jp/p/?_k_c=200&_k_u=", "10" },
-			{ "bing", "http://d2c.infogin.com/ja-jp/lnk000/=", "20" },
-			{ "GoogleWT", "http://www.google.co.jp/gwt/x?u=", "30" }, };
+			{ "Google", "http://www.google.com/gwt/x?u=", "10" },
+			{ "bing", "http://d2c.infogin.com/ja-jp/lnk000/=", "30" },
+			{ "pc2m", "http://rg0020.ddo.jp/p/?_k_c=200&_k_u=", "40" },
+			
+			};
 
 	// 呼び出し元Activityへの参照をContextとして持ち回りできるように
 	private final Context mCtx;
