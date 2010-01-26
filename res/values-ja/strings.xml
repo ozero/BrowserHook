@@ -11,7 +11,7 @@
 <string name="ButtonOK">この内容で保存</string>
 <string name="ButtonCancel">キャンセル</string>
 <string name="ButtonDirect">直接表示する</string>
-<string name="ButtonConvert">変換して表示する</string>
+<string name="ButtonConvert">変換して表示</string>
 <string name="ButtonSetting">設定</string>
 
 <string name="menu_insert">追加</string>
@@ -20,6 +20,8 @@
 <string name="menu_import">SDから読み込み</string>
 <string name="menu_export">SDへ書き出し</string>
 <string name="menu_initialize">初期化</string>
+<string name="menu_history">変換履歴</string>
+<string name="menu_setting">設定</string>
 
 <string name="alert_init_title">項目の初期化</string>
 <string name="alert_init_msg">項目を初期化していいですか？</string>

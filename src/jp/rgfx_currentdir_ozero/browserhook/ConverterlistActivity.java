@@ -386,7 +386,7 @@ public class ConverterlistActivity extends ListActivity {
 				mDbHelper.createItem(
 						getstr.get(i)[0], 
 						getstr.get(i)[1], 
-						getstr.get(i)[2]);
+						Integer.parseInt(getstr.get(i)[2]));
 			}
 			
 			//rebuild gui

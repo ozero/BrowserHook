@@ -46,7 +46,7 @@ public class Converter {
 			+DATABASE_TABLE 
 			+ " (" + "_id integer primary key autoincrement, "
 			+ "title text not null, url text not null, "
-			+ "ord text not null);";
+			+ "ord integer not null);";
 
 	public static String initval[][] = {
 			{ "Google", "http://www.google.com/gwt/x?u=", "10" },
@@ -129,7 +129,7 @@ public class Converter {
 	 * successfully created return the new rowId for that item, otherwise return
 	 * a -1 to indicate failure.
 	 */
-	public long createItem(String title, String url, String order) {
+	public long createItem(String title, String url, int order) {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_TITLE, title);
 		initialValues.put(KEY_URL, url);
@@ -215,7 +215,7 @@ public class Converter {
 	 * specified using the rowId, and it is altered to use the title and body
 	 * values passed in
 	 */
-	public boolean updateItem(long rowId, String title, String url, String order) {
+	public boolean updateItem(long rowId, String title, String url, int order) {
 		ContentValues args = new ContentValues();
 		args.put(KEY_TITLE, title);
 		args.put(KEY_URL, url);

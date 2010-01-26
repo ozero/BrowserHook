@@ -101,13 +101,13 @@ public class SettingActivity extends Activity {
 
         if (mRowId == null) {
         	Log.d("save","insert");
-            long id = mDbHelper.createItem("new item", "", "10");
+            long id = mDbHelper.createItem("new item", "", 10);
             if (id > 0) {
                 mRowId = id;
             	Log.d("save","insert:ok");
             }
         } else {
-            mDbHelper.updateItem(mRowId, title, body, order);
+            mDbHelper.updateItem(mRowId, title, body, Integer.parseInt(order));
         }
     }
     

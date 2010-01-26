@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+
+  <LinearLayout android:id="@+id/LinearLayoutDirect"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="4dp"
+    android:layout_marginTop="8dp"
+    >
+
+	  <LinearLayout android:id="@+id/LinearLayoutDirect"
+	    android:orientation="vertical"
+      android:layout_weight="1"
+      android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    >
+			<TextView android:id="@+id/TVbrowsers"
+				android:layout_width="fill_parent"
+        android:layout_height="26dp"
+		    android:text="@string/TextViewAPP"
+				android:textColor="#f0f0f0"
+        android:textSize="14dp"
+				android:textStyle="bold"
+        android:background="@drawable/x_navymetal_0head"
+				 />
+      <LinearLayout
+	      android:background="@drawable/x_f0f0f0_2foot"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="6dp"
+	      >				 
+				<Spinner android:id="@+id/SpinnerBrowsers"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content" />
+      </LinearLayout>
+    </LinearLayout>
+	
+		<LinearLayout android:id="@+id/LinearLayoutConvert"
+			android:orientation="vertical"
+      android:layout_weight="1"
+      android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+	    android:layout_marginLeft="4dp"
+			>
+		  <TextView android:id="@+id/TVconverters"
+		    android:layout_width="fill_parent"
+		    android:layout_height="26dp"
+		    android:text="@string/TextViewTITLE"
+        android:textColor="#f0f0f0"
+        android:textStyle="bold"
+        android:textSize="14dp"
+        android:background="@drawable/x_navymetal_0head"
+		     />
+      <LinearLayout
+        android:background="@drawable/x_f0f0f0_2foot"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="6dp"
+        >        
+				<Spinner android:id="@+id/SpinnerConverters"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"></Spinner>
+      </LinearLayout>
+    </LinearLayout>
+
+  </LinearLayout>
+
+  <Button
+    android:id="@+id/ButtonDirect"
+    android:text="@string/ButtonDirect"
+    android:layout_width="fill_parent"
+    android:layout_height="48dp"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="20dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
+        android:textColor="#f0f0f0"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        android:background="@drawable/button0"
+    />
+  <Button
+    android:id="@+id/ButtonConvert"
+    android:text="@string/ButtonConvert"
+    android:layout_width="fill_parent"
+    android:layout_height="48dp"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="4dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
+        android:textColor="#f0f0f0"
+        android:textStyle="bold"
+        android:textSize="24dp"
+        android:background="@drawable/button1"
+    />
+
+</LinearLayout>
+

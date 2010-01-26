@@ -20,6 +20,8 @@
 <string name="menu_import">SD:import</string>
 <string name="menu_export">SD:export</string>
 <string name="menu_initialize">Initialize</string>
+<string name="menu_history">History</string>
+<string name="menu_setting">Setting</string>
 
 <string name="alert_init_title">Initialize</string>
 <string name="alert_init_msg">Initialize All items. Are you sure?</string>

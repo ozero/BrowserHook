@@ -1,0 +1,20 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	<!-- disable -->
+	<item 
+		android:state_enabled="false"
+		android:drawable="@drawable/x_lightgraymetal_single" />
+  <!-- activated -->
+  <item 
+    android:state_pressed="true" 
+    android:state_enabled="true"
+    android:drawable="@drawable/x_5a9ae0_single" />
+  <!-- forcused -->
+  <item 
+    android:state_focused="true" 
+    android:state_enabled="true"
+    android:drawable="@drawable/x_turquoisegradient_single" />
+  <!-- normal -->
+  <item 
+    android:state_enabled="true"
+    android:drawable="@drawable/x_darkgraymetal_single" />
+</selector>

@@ -14,6 +14,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -36,7 +39,8 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 	private static Spinner wdgSpinnerConverters = null;
 	private Button wdgDirectBtn;
 	private Button wdgConvertBtn;
-	private Button wdgSettingBtn;
+	private static final int HISTORY_ID = R.id.menu_history;
+	private static final int SETTING_ID = R.id.menu_setting;
 	
 	// private Spinner wdgSpinnerConverters = (Spinner)
 	// findViewById(R.id.SpinnerConverters);
@@ -51,7 +55,7 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 		
 		// start
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.browserhook);
 		mDbHelper = new Converter(this);
 		mDbHelper.open();
 		
@@ -60,8 +64,6 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 		wdgDirectBtn.setOnClickListener(this);
 		wdgConvertBtn = (Button) findViewById(R.id.ButtonConvert);
 		wdgConvertBtn.setOnClickListener(this);
-		wdgSettingBtn = (Button) findViewById(R.id.ButtonSetting);
-		wdgSettingBtn.setOnClickListener(this);
 
 		// インテントが渡されたか単体起動かを判別
 		if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
@@ -89,11 +91,44 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 		super.onActivityResult(requestCode, resultCode, intent);
 		// buildSelectDialog();
 	}
+	
+	// //////////////////////////////////////////////////////////////////////
+	// GUI defs
+	
+	// メニューを作成
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		// メニューインフレーターを取得
+		MenuInflater inflater = getMenuInflater();
+		// xmlのリソースファイルを使用してメニューにアイテムを追加
+		inflater.inflate(R.menu.browserhook, menu);
+		// できたらtrueを返す
+		return true;
+	}
+
+	
 
 
 	// //////////////////////////////////////////////////////////////////////
 	// GUI event dispatcher: widget
 		
+	// メニューがクリックされた際
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch (item.getItemId()) {
+		case HISTORY_ID:
+			
+			return true;
+		case SETTING_ID:
+			Log.d(TAG, "menu:setting");
+			startConverterlistActivity();
+			return true;
+		}
+
+		return super.onMenuItemSelected(featureId, item);
+	}
+	
 	// ボタンクリックのディスパッチ
 	public void onClick(View v) {
 		if (v == wdgDirectBtn) {
@@ -123,14 +158,9 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 				CONVERTERS.get((int)cnvkey).get("url")
 			;
 			startBrowserApp(cnv,app[0], app[1]);
-		} else if (v == wdgSettingBtn) {
-			Log.d(TAG, "click:setting");
-			startConverterlistActivity();
 		}
 		return;
-	}
-	
-	
+	}	
 	
 	// //////////////////////////////////////////////////////////////////////
 	// GUI transition
