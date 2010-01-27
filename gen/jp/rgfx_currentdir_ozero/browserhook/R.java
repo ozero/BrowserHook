@@ -54,7 +54,9 @@ public final class R {
         public static final int browserhook=0x7f030000;
         public static final int converterlist=0x7f030001;
         public static final int converterlistitem=0x7f030002;
-        public static final int settingeditor=0x7f030003;
+        public static final int historylist=0x7f030003;
+        public static final int historylistitem=0x7f030004;
+        public static final int settingeditor=0x7f030005;
     }
     public static final class menu {
         public static final int browserhook=0x7f060000;
@@ -75,6 +77,7 @@ public final class R {
         public static final int alert_init_title=0x7f040013;
         public static final int app_name=0x7f040000;
         public static final int apptitle_edit=0x7f040019;
+        public static final int apptitle_history=0x7f04001a;
         public static final int apptitle_main=0x7f040017;
         public static final int apptitle_main_standalone=0x7f040018;
         public static final int menu_delete=0x7f04000c;

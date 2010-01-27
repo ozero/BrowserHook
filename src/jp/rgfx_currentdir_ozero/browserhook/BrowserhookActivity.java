@@ -1,7 +1,11 @@
 package jp.rgfx_currentdir_ozero.browserhook;
 
+
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -45,6 +49,7 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 	// private Spinner wdgSpinnerConverters = (Spinner)
 	// findViewById(R.id.SpinnerConverters);
 	private Converter mDbHelper;
+	private History HistoryDBHelper;
 	
 	// //////////////////////////////////////////////////////////////////////
 	// GUI event dispatcher: activity
@@ -58,6 +63,8 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 		setContentView(R.layout.browserhook);
 		mDbHelper = new Converter(this);
 		mDbHelper.open();
+		HistoryDBHelper = new History(this);
+		HistoryDBHelper.open();
 		
 		//bind
 		wdgDirectBtn = (Button) findViewById(R.id.ButtonDirect);
@@ -118,7 +125,8 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
 		case HISTORY_ID:
-			
+			Log.d(TAG, "menu:history");
+			startHistoryActivity();
 			return true;
 		case SETTING_ID:
 			Log.d(TAG, "menu:setting");
@@ -172,6 +180,13 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 		// クリックされた行のIDをintentに埋める。これで項目ID取れるのなー
 		startActivityForResult(i, ACTIVITY_EDIT);
 		//Log.d(TAG, "scla:launch setting activity.");
+		return;
+	}
+
+	// 履歴画面を開く
+	private void startHistoryActivity() {
+		Intent i = new Intent(this,HistoryActivity.class);
+		startActivity(i);
 		return;
 	}
 
@@ -318,11 +333,18 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 	// URLを加工してブラウザを起動する。
 	private void startBrowserApp(String cv,String pkg, String act) {
 		Log.d(TAG, "sba:cv:" + cv);
+		
+		//log2db
+		Date currentTime_1 = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd.HH_mm_ss");
+		String dateString = formatter.format(currentTime_1);
+		//Log.d(TAG, "sba:cv:" + dateString);
+		HistoryDBHelper.createItem(URI.toString(),dateString);
+		
+		//mod url
 		URI = Uri.parse(cv + URI.toString());
-//		Log.d(TAG, "sba:urlmod:" + URI);
-//		Log.d(TAG, "sba:pkg:" + pkg);
-//		Log.d(TAG, "sba:act:" + act);
-
+		
+		//open app
 		ComponentName comp = new ComponentName(pkg,act);
 		Intent intent = new Intent(Intent.ACTION_VIEW, URI);
 		intent.setComponent(comp);		

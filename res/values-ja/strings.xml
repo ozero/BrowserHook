@@ -32,5 +32,6 @@
 <string name="apptitle_main">変換</string>
 <string name="apptitle_main_standalone">設定：編集する項目を選んでください</string>
 <string name="apptitle_edit">変換項目の編集</string>
+<string name="apptitle_history">履歴</string>
 
 </resources>

@@ -32,5 +32,6 @@
 <string name="apptitle_main">conv.</string>
 <string name="apptitle_main_standalone">please select item to edit.</string>
 <string name="apptitle_edit">edit the conversion item.</string>
+<string name="apptitle_history">History</string>
 
 </resources>

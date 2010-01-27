@@ -37,6 +37,7 @@ public class ConverterlistActivity extends ListActivity {
 	private static final int INSERT_ID = R.id.menu_insert;
 	private static final int EXPORT_ID = R.id.menu_export;
 	private static final int IMPORT_ID = R.id.menu_import;
+	private static final int HISTORY_ID = R.id.menu_history;
 	private static final int INITIALIZE_ID = R.id.menu_initialize;
 	private static final int DELETE_ID = 0;
 	private Converter mDbHelper;
@@ -130,6 +131,10 @@ public class ConverterlistActivity extends ListActivity {
 		case INITIALIZE_ID:
 			initializeItem();
 			return true;
+		case HISTORY_ID:
+			Log.d(TAG, "menu:history");
+			startHistoryActivity();
+			return true;
 		}
 
 		return super.onMenuItemSelected(featureId, item);
@@ -180,6 +185,13 @@ public class ConverterlistActivity extends ListActivity {
 		Intent i = new Intent(this, SettingActivity.class);
 		startActivityForResult(i, ACTIVITY_CREATE);
 		Log.d(TAG, "ssa:launch setting activity.");
+		return;
+	}
+
+	// 履歴画面を開く
+	private void startHistoryActivity() {
+		Intent i = new Intent(this,HistoryActivity.class);
+		startActivity(i);
 		return;
 	}
 
