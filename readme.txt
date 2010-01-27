@@ -1,5 +1,5 @@
 
-- Œ©Š:
+- è¦‹æ‰€:
 "List<ResolveInfo> android.content.pm.PackageManager.queryIntentActivities(Intent intent, int flags)"
-‚±‚¢‚Â‚ÉUI”í‚¹‚é‚½‚ß‚¾‚¯‚É‰„X‚ÆƒR[ƒh‚ğ‘‚«˜A‚Ë‚Ü‚µ‚½B
-‚Í‚¢B
+ã“ã„ã¤ã«UIè¢«ã›ã‚‹ãŸã‚ã ã‘ã«å»¶ã€…ã¨ã‚³ãƒ¼ãƒ‰ã‚’æ›¸ãé€£ã­ã¾ã—ãŸã€‚
+ã¯ã„ã€‚
