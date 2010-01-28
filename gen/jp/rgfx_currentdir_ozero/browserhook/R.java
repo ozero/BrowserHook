@@ -73,13 +73,14 @@ public final class R {
         public static final int TextViewORDER=0x7f040005;
         public static final int TextViewTITLE=0x7f040001;
         public static final int TextViewURL=0x7f040002;
-        public static final int alert_init_msg=0x7f040014;
-        public static final int alert_init_title=0x7f040013;
+        public static final int alert_init_msg=0x7f040016;
+        public static final int alert_init_title=0x7f040015;
         public static final int app_name=0x7f040000;
-        public static final int apptitle_edit=0x7f040019;
-        public static final int apptitle_history=0x7f04001a;
-        public static final int apptitle_main=0x7f040017;
-        public static final int apptitle_main_standalone=0x7f040018;
+        public static final int apptitle_edit=0x7f04001b;
+        public static final int apptitle_history=0x7f04001c;
+        public static final int apptitle_main=0x7f040019;
+        public static final int apptitle_main_standalone=0x7f04001a;
+        public static final int menu_browser=0x7f040013;
         public static final int menu_delete=0x7f04000c;
         public static final int menu_edit=0x7f04000d;
         public static final int menu_export=0x7f04000f;
@@ -88,8 +89,9 @@ public final class R {
         public static final int menu_initialize=0x7f040010;
         public static final int menu_insert=0x7f04000b;
         public static final int menu_setting=0x7f040012;
-        public static final int spinnerPrompt_browser=0x7f040015;
-        public static final int spinnerPrompt_converter=0x7f040016;
+        public static final int menu_share=0x7f040014;
+        public static final int spinnerPrompt_browser=0x7f040017;
+        public static final int spinnerPrompt_converter=0x7f040018;
     }
     public static final class style {
         public static final int Theme_base=0x7f050000;

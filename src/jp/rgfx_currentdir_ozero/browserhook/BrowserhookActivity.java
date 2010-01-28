@@ -79,6 +79,14 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 					+ URI.toString());// タイトルを設定
 			IS_STANDALONE = false;
 			Log.d(TAG, "oc:i:got");
+
+			//log2db
+			Date currentTime_1 = new Date();
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+			String dateString = formatter.format(currentTime_1);
+			//Log.d(TAG, "sba:cv:" + dateString);
+			HistoryDBHelper.createItem(URI.toString(),dateString);
+
 			//
 			buildBrowserSpinner();
 			buildConvertSpinner();
@@ -187,6 +195,7 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 	private void startHistoryActivity() {
 		Intent i = new Intent(this,HistoryActivity.class);
 		startActivity(i);
+		finish();
 		return;
 	}
 
@@ -333,13 +342,6 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 	// URLを加工してブラウザを起動する。
 	private void startBrowserApp(String cv,String pkg, String act) {
 		Log.d(TAG, "sba:cv:" + cv);
-		
-		//log2db
-		Date currentTime_1 = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd.HH_mm_ss");
-		String dateString = formatter.format(currentTime_1);
-		//Log.d(TAG, "sba:cv:" + dateString);
-		HistoryDBHelper.createItem(URI.toString(),dateString);
 		
 		//mod url
 		URI = Uri.parse(cv + URI.toString());

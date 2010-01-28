@@ -1,10 +1,14 @@
 package jp.rgfx_currentdir_ozero.browserhook;
 
 import android.app.ListActivity;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.method.CharacterPickerDialog;
+import android.text.style.CharacterStyle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
@@ -12,6 +16,7 @@ import android.widget.SimpleCursorAdapter;
 
 public class HistoryActivity extends ListActivity {
 	static Uri URI = null;
+	static String clickeduri = null;
 	static Boolean IS_STANDALONE = true;
 	static String TAG = "his";
 	private History mDbHelper;
@@ -60,22 +65,51 @@ public class HistoryActivity extends ListActivity {
 	// //////////////////////////////////////////////////////////////////////
 	// GUI traisition
 
-	// 設定画面を開く：項目を編集する
+	// 項目を使う
 	private void openItem(long id) {
 		Log.d(TAG, "ssa:openSetting:" + id);
 		
-		//
+		//get clicked content
 		Cursor c = mDbHelper.fetchItem(id);
 		startManagingCursor(c);
 		c.moveToFirst();
-		String text = c.getString(1);
+		HistoryActivity.clickeduri = c.getString(1);
+		
+		//build choice dialog
+		Builder b = new Builder(this);
+		String[] bitem = {getString(R.string.menu_browser),
+				getString(R.string.menu_share)};
+		b.setSingleChoiceItems(bitem, 0,
+            new DialogInterface.OnClickListener(){
+	        	public void onClick(DialogInterface dialog, int which) {
+	        		Intent i = new Intent();
+	        		if(which==0){
+	        			//browser
+	        			i.setAction(Intent.ACTION_VIEW);
+	        			i.setData(Uri.parse(clickeduri));
+	        			finish();
+	        			
+	        		}else{
+	        			//share
+	        			i.setAction(Intent.ACTION_SEND);
+	        			i.setType("text/plain");
+	        			i.putExtra(Intent.EXTRA_TEXT, clickeduri);
+	        			finish();
+	        		}
+	        		startActivity(i);
+	        	}
+	        }		
+		);
+		b.setNegativeButton(R.string.ButtonCancel, 
+            new DialogInterface.OnClickListener(){
+	        	public void onClick(DialogInterface dialog, int which) {
+	        	}
+	        }				
+		);
+		b.show();
+		
 		
 		//
-		Intent i = new Intent();
-		i.setAction(Intent.ACTION_SEND);
-		i.setType("text/plain");
-		i.putExtra(Intent.EXTRA_TEXT, text);
-		startActivity(i);
 		Log.d(TAG, "ssa:launch setting activity.");
 		return;
 	}

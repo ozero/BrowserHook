@@ -22,6 +22,8 @@
 <string name="menu_initialize">初期化</string>
 <string name="menu_history">変換履歴</string>
 <string name="menu_setting">設定</string>
+<string name="menu_browser">ブラウザで開く</string>
+<string name="menu_share">URLを共有する</string>
 
 <string name="alert_init_title">項目の初期化</string>
 <string name="alert_init_msg">項目を初期化していいですか？</string>
