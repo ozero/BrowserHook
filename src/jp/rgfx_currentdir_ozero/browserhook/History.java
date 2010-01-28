@@ -169,7 +169,7 @@ public class History {
 	public Cursor fetchAllItems() {
 
 		return mDb.query(DATABASE_TABLE, new String[] { KEY_ROWID,
-				KEY_URL, KEY_TIMESTAMP }, null, null, null, null, KEY_TIMESTAMP);
+				KEY_URL, KEY_TIMESTAMP }, null, null, null, null, KEY_TIMESTAMP + " desc");
 	}
 
 	/**
