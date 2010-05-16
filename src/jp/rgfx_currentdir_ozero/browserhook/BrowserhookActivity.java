@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.content.SharedPreferences;
 
 import jp.rgfx_currentdir_ozero.browserhook.Converter;
 
@@ -37,7 +38,10 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 	private static final int ACTIVITY_EDIT = 1;
 	private static ArrayList<HashMap<String, String>> SUITABLEAPPS = new ArrayList<HashMap<String, String>>();
 	private static ArrayList<HashMap<String, String>> CONVERTERS = new ArrayList<HashMap<String, String>>();
-
+	public static final String PREFS_NAME = "MyPrefsFile";
+	private static SharedPreferences mySharedPrefs;
+	private static String lastBrowser;
+	
 	//gui
 	private static Spinner wdgSpinnerBrowsers = null;
 	private static Spinner wdgSpinnerConverters = null;
@@ -78,7 +82,7 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 			setTitle(getText(R.string.apptitle_main).toString() + ": "
 					+ URI.toString());// タイトルを設定
 			IS_STANDALONE = false;
-			Log.d(TAG, "oc:i:got");
+			//Log.d(TAG, "oc:i:got");
 
 			//log2db
 			Date currentTime_1 = new Date();
@@ -87,12 +91,19 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 			//Log.d(TAG, "sba:cv:" + dateString);
 			HistoryDBHelper.createItem(URI.toString(),dateString);
 
+			//load shared prefs
+	        // Restore preferences
+	        mySharedPrefs = getSharedPreferences(PREFS_NAME, 0);
+	        lastBrowser = mySharedPrefs.getString("lastBrowser", "");
+			//Log.d(TAG, "oc:shpref:lb:" + lastBrowser);
+
+	        
 			//
 			buildBrowserSpinner();
 			buildConvertSpinner();
 		} else {
 			IS_STANDALONE = true;
-			Log.d(TAG, "oc:i:none");
+			//Log.d(TAG, "oc:i:none");
 			startConverterlistActivity();
 			finish();
 		}
@@ -133,11 +144,11 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
 		case HISTORY_ID:
-			Log.d(TAG, "menu:history");
+			//Log.d(TAG, "menu:history");
 			startHistoryActivity();
 			return true;
 		case SETTING_ID:
-			Log.d(TAG, "menu:setting");
+			//Log.d(TAG, "menu:setting");
 			startConverterlistActivity();
 			return true;
 		}
@@ -148,7 +159,7 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 	// ボタンクリックのディスパッチ
 	public void onClick(View v) {
 		if (v == wdgDirectBtn) {
-			Log.d(TAG, "click:direct");
+			//Log.d(TAG, "click:direct");
 			//
 			wdgSpinnerBrowsers = (Spinner) findViewById(R.id.SpinnerBrowsers);
 			long itemid = wdgSpinnerBrowsers.getSelectedItemId();
@@ -159,7 +170,7 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 			startBrowserApp("",app[0], app[1]);
 			
 		} else if (v == wdgConvertBtn) {
-			Log.d(TAG, "click:convert");
+			//Log.d(TAG, "click:convert");
 			//
 			wdgSpinnerBrowsers = (Spinner) findViewById(R.id.SpinnerBrowsers);
 			long itemid = wdgSpinnerBrowsers.getSelectedItemId();
@@ -214,22 +225,20 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 		wdgSpinnerBrowsers.setAdapter(adapter);
 		// アイテムを追加します
 		SUITABLEAPPS = getSuitableActivities();
-		for (int i = 0; i < SUITABLEAPPS.size(); i++) {
+		for (int i = 0; i < SUITABLEAPPS.size();i++) {
 			adapter.add(SUITABLEAPPS.get(i).get("label"));
 		}
 		// スピナーのアイテムが選択された時に呼び出されるコールバックを登録します
 		wdgSpinnerBrowsers
 				.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-					@Override
 					public void onItemSelected(AdapterView<?> parent,
 							View view, int position, long id) {
-						Spinner spinner = (Spinner) parent;
+						//Spinner spinner = (Spinner) parent;
 						// 選択されたアイテムを取得します
-						String item = (String) spinner.getSelectedItem();
-						Log.d(TAG, "spb:sel:" + item);
+						//String item = (String) spinner.getSelectedItem();
+						//Log.d(TAG, "spb:sel:" + item);
 					}
 
-					@Override
 					public void onNothingSelected(AdapterView<?> parent) {
 					}
 				});
@@ -247,24 +256,44 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 		ArrayList<HashMap<String, String>> apps = new ArrayList<HashMap<String, String>>();
 		
 		//
+		List<ResolveInfo> list = new ArrayList<ResolveInfo>();
+		ResolveInfo info;
+		HashMap<String, String> appinfo;
+		//
 		final PackageManager pm = this.getPackageManager();
 		final Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_VIEW);
 		intent.addCategory(Intent.CATEGORY_BROWSABLE);
 		intent.setData(Uri.parse("http://cnn.com/"));
-		List<ResolveInfo> list = pm.queryIntentActivities(intent,
+		List<ResolveInfo> list_src = pm.queryIntentActivities(intent,
 				PackageManager.MATCH_DEFAULT_ONLY);
 
-		if (list == null) {
+		if (list_src == null) {
 			return apps;
 		}
-
-		Collections.sort(list, new ResolveInfo.DisplayNameComparator(pm));
+		
+		//いったんソートする
+		Collections.sort(list_src, new ResolveInfo.DisplayNameComparator(pm));
+		
+		//listに対し、lastBrowserに等しいpackageNameを持っている要素を先頭に持ってくる
+		for (int i = 0; i < list_src.size(); i++) {
+			info = list_src.get(i);
+			if(lastBrowser.equals((String) info.activityInfo.applicationInfo.packageName)){
+				list.add(list_src.get(i));
+			}
+		}
+		//それ以外を後から追加する
+		for (int i = 0; i < list_src.size(); i++) {
+			info = list_src.get(i);
+			if(!lastBrowser.equals((String) info.activityInfo.applicationInfo.packageName)){
+				list.add(list_src.get(i));
+			}
+		}
 
 		// アクティビティ情報の取得
 		for (int i = 0; i < list.size(); i++) {
-			HashMap<String, String> appinfo = new HashMap<String, String>();
-			ResolveInfo info = list.get(i);
+			appinfo = new HashMap<String, String>();
+			info = list.get(i);
 			//
 			appinfo.put("label", (String) info.loadLabel(pm));
 			//Log.d(TAG, "gsa:label:" + (String) info.loadLabel(pm));
@@ -313,7 +342,6 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 		// スピナーのアイテムが選択された時に呼び出されるコールバックを登録します
 		wdgSpinnerConverters
 				.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-					@Override
 					public void onItemSelected(AdapterView<?> parent,
 							View view, int position, long id) {
 						Spinner spinner = (Spinner) parent;
@@ -321,11 +349,10 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 						Cursor c = mDbHelper.fetchItemByTitle((String) spinner
 								.getSelectedItem());
 						startManagingCursor(c);
-						String item = c.getString(2);
-						Log.d(TAG, "bcs:ois:sel:" + item);
+						//String item = c.getString(2);
+						//Log.d(TAG, "bcs:ois:sel:" + item);
 					}
 
-					@Override
 					public void onNothingSelected(AdapterView<?> parent) {
 					}
 				});
@@ -335,13 +362,21 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 				(CharSequence)getString(R.string.spinnerPrompt_converter)		
 		);
 		
-		Log.d(TAG, "init:dialog:show:done");
+		//Log.d(TAG, "init:dialog:show:done");
 		return;
 	}
 
 	// URLを加工してブラウザを起動する。
 	private void startBrowserApp(String cv,String pkg, String act) {
-		Log.d(TAG, "sba:cv:" + cv);
+		//Log.d(TAG, "sba:cv:" + cv);
+
+		//save browser selection
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+	    SharedPreferences.Editor editor = settings.edit();
+	    editor.putString("lastBrowser", pkg);
+		//Log.d(TAG, "sba:shpref:lb:" + pkg);
+	    // Don't forget to commit your edits!!!
+	    editor.commit();		
 		
 		//mod url
 		URI = Uri.parse(cv + URI.toString());
@@ -352,7 +387,7 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 		intent.setComponent(comp);		
 		startActivity(intent);
 		finish();
-		Log.d(TAG, "successfully launch browser.");
+		//Log.d(TAG, "successfully launch browser.");
 		return;
 	}
 	
