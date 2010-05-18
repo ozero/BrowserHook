@@ -4,6 +4,7 @@ package jp.rgfx_currentdir_ozero.browserhook;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -63,20 +64,6 @@ public class SettingActivity extends Activity {
         });
     }
     
-    //widgetをデータで埋める
-    private void populateFields() {
-        if (mRowId != null) {
-            Cursor note = mDbHelper.fetchItem(mRowId);
-            startManagingCursor(note);
-            mTitleText.setText(note.getString(
-    	            note.getColumnIndexOrThrow(Converter.KEY_TITLE)));
-            mUrlText.setText(note.getString(
-                    note.getColumnIndexOrThrow(Converter.KEY_URL)));
-            mOrderText.setText(note.getString(
-                    note.getColumnIndexOrThrow(Converter.KEY_ORDER)));
-        }
-    }
-    
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -92,6 +79,29 @@ public class SettingActivity extends Activity {
     protected void onResume() {
         super.onResume();
         populateFields();
+    }
+    
+	//アクティビティが破棄される際に。
+	protected void onDestroy(int requestCode, int resultCode,
+			Intent intent) {
+		super.onDestroy();
+		mDbHelper.close();
+	}
+    
+    //////////////////////////////////////////////////////////////////
+    
+    //widgetをデータで埋める
+    private void populateFields() {
+        if (mRowId != null) {
+            Cursor note = mDbHelper.fetchItem(mRowId);
+            startManagingCursor(note);
+            mTitleText.setText(note.getString(
+    	            note.getColumnIndexOrThrow(Converter.KEY_TITLE)));
+            mUrlText.setText(note.getString(
+                    note.getColumnIndexOrThrow(Converter.KEY_URL)));
+            mOrderText.setText(note.getString(
+                    note.getColumnIndexOrThrow(Converter.KEY_ORDER)));
+        }
     }
     
     private void saveState() {
@@ -110,5 +120,6 @@ public class SettingActivity extends Activity {
             mDbHelper.updateItem(mRowId, title, body, Integer.parseInt(order));
         }
     }
+    
     
 }

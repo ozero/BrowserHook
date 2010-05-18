@@ -13,6 +13,7 @@
 <string name="ButtonDirect">go direct</string>
 <string name="ButtonConvert">convert</string>
 <string name="ButtonSetting">setting</string>
+<string name="ButtonHistory">history</string>
 
 <string name="menu_insert">Add</string>
 <string name="menu_delete">Delete</string>

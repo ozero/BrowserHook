@@ -13,6 +13,7 @@
 <string name="ButtonDirect">直接表示する</string>
 <string name="ButtonConvert">変換して表示</string>
 <string name="ButtonSetting">設定</string>
+<string name="ButtonHistory">履歴</string>
 
 <string name="menu_insert">追加</string>
 <string name="menu_delete">削除</string>

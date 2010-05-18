@@ -73,6 +73,12 @@ public class ConverterlistActivity extends ListActivity {
 		
 	}
 
+	//アクティビティが破棄される際に。
+	protected void onDestroy(int requestCode, int resultCode,
+			Intent intent) {
+		super.onDestroy();
+		mDbHelper.close();
+	}
 
 	// //////////////////////////////////////////////////////////////////////
 	// GUI defs
