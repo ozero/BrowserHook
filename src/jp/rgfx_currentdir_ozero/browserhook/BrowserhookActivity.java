@@ -32,30 +32,36 @@ import android.content.SharedPreferences;
 import jp.rgfx_currentdir_ozero.browserhook.Converter;
 
 public class BrowserhookActivity extends Activity implements OnClickListener  {
-	static Uri URI = null;
-	static Boolean IS_STANDALONE = true;
-	static String TAG = "bh";
-	private static final int ACTIVITY_EDIT = 1;
-	private static ArrayList<HashMap<String, String>> SUITABLEAPPS = new ArrayList<HashMap<String, String>>();
-	private static ArrayList<HashMap<String, String>> CONVERTERS = new ArrayList<HashMap<String, String>>();
-	public static final String PREFS_NAME = "MyPrefsFile";
-	private static SharedPreferences mySharedPrefs;
-	private static String lastBrowser;
+	
+	//constants
+	public static Uri URI = null;
+	public static Boolean IS_STANDALONE = true;
+	public static String TAG = "bh";
+	public static String PREFS_NAME = "MyPrefsFile";
+	public static String sPrefKeyDisableHistory = "DisableHistory";
+	public static Integer ACTIVITY_EDIT = 1;
+	
+	//member
+	private ArrayList<HashMap<String, String>> mSuitableApps = new ArrayList<HashMap<String, String>>();
+	private ArrayList<HashMap<String, String>> mConverters = new ArrayList<HashMap<String, String>>();
+	private SharedPreferences mSharedPrefs;
+	private String mLastBrowser;
 	
 	//gui
-	private static Spinner wdgSpinnerBrowsers = null;
-	private static Spinner wdgSpinnerConverters = null;
-	private Button wdgDirectBtn;
-	private Button wdgConvertBtn;
-	private Button wdgHistoryBtn;
-	private Button wdgSettingBtn;
-	private static final int HISTORY_ID = R.id.menu_history;
-	private static final int SETTING_ID = R.id.menu_setting;
+	private Spinner mWdgSpinnerBrowsers = null;
+	private Spinner mWdgSpinnerConverters = null;
+	private Button mWdgDirectBtn;
+	private Button mWdgConvertBtn;
+	private Button mWdgHistoryBtn;
+	private Button mWdgSettingBtn;
+	private final int mHistoryId = R.id.menu_history;
+	private final int mSettingId = R.id.menu_setting;
 	
+	//instances
 	// private Spinner wdgSpinnerConverters = (Spinner)
 	// findViewById(R.id.SpinnerConverters);
-	private Converter mDbHelper;
-	private History HistoryDBHelper;
+	private Converter mDbHelperConverter;
+	private History mDBHelperHistory;
 	
 	// //////////////////////////////////////////////////////////////////////
 	// GUI event dispatcher: activity
@@ -67,20 +73,21 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 		// start
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.browserhook);
-		mDbHelper = new Converter(this);
-		mDbHelper.open();
-		HistoryDBHelper = new History(this);
-		HistoryDBHelper.open();
+		mDbHelperConverter = new Converter(this);
+		mDbHelperConverter.open();
+		mDBHelperHistory = new History(this);
+		mDBHelperHistory.open();
+		mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
 		
 		//bind
-		wdgDirectBtn = (Button) findViewById(R.id.ButtonDirect);
-		wdgDirectBtn.setOnClickListener(this);
-		wdgConvertBtn = (Button) findViewById(R.id.ButtonConvert);
-		wdgConvertBtn.setOnClickListener(this);
-		wdgHistoryBtn = (Button) findViewById(R.id.ButtonHistory);
-		wdgHistoryBtn.setOnClickListener(this);
-		wdgSettingBtn = (Button) findViewById(R.id.ButtonSetting);
-		wdgSettingBtn.setOnClickListener(this);
+		mWdgDirectBtn = (Button) findViewById(R.id.ButtonDirect);
+		mWdgDirectBtn.setOnClickListener(this);
+		mWdgConvertBtn = (Button) findViewById(R.id.ButtonConvert);
+		mWdgConvertBtn.setOnClickListener(this);
+		mWdgHistoryBtn = (Button) findViewById(R.id.ButtonHistory);
+		mWdgHistoryBtn.setOnClickListener(this);
+		mWdgSettingBtn = (Button) findViewById(R.id.ButtonSetting);
+		mWdgSettingBtn.setOnClickListener(this);
 
 		// インテントが渡されたか単体起動かを判別
 		if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
@@ -90,17 +97,19 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 			IS_STANDALONE = false;
 			//Log.d(TAG, "oc:i:got");
 
-			//log2db
-			Date currentTime_1 = new Date();
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			String dateString = formatter.format(currentTime_1);
-			//Log.d(TAG, "sba:cv:" + dateString);
-			HistoryDBHelper.createItem(URI.toString(),dateString);
-
+			//履歴が許可されているなら記録
+			final Boolean historyAvailable = mSharedPrefs.getBoolean(
+					sPrefKeyDisableHistory, false);  
+			if(!historyAvailable){
+				Date currentTime_1 = new Date();
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				String dateString = formatter.format(currentTime_1);
+				//Log.d(TAG, "sba:cv:" + dateString);
+				mDBHelperHistory.createItem(URI.toString(),dateString);
+			}
+			
 			//load shared prefs
-	        // Restore preferences
-	        mySharedPrefs = getSharedPreferences(PREFS_NAME, 0);
-	        lastBrowser = mySharedPrefs.getString("lastBrowser", "");
+      mLastBrowser = mSharedPrefs.getString("lastBrowser", "");
 	        
 			//build spinner
 			buildBrowserSpinner();
@@ -127,8 +136,8 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 	protected void onDestroy(int requestCode, int resultCode,
 			Intent intent) {
 		super.onDestroy();
-		mDbHelper.close();
-		HistoryDBHelper.close();
+		mDbHelperConverter.close();
+		mDBHelperHistory.close();
 	}
 	
 	
@@ -158,11 +167,11 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
-		case HISTORY_ID:
+		case mHistoryId:
 			//Log.d(TAG, "menu:history");
 			startHistoryActivity();
 			return true;
-		case SETTING_ID:
+		case mSettingId:
 			//Log.d(TAG, "menu:setting");
 			startConverterlistActivity();
 			return true;
@@ -174,39 +183,39 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 	// ボタンクリックのディスパッチ
 	public void onClick(View v) {
 
-		if (v == wdgDirectBtn) {
+		if (v == mWdgDirectBtn) {
 			//Log.d(TAG, "click:direct");
 			//
-			wdgSpinnerBrowsers = (Spinner) findViewById(R.id.SpinnerBrowsers);
-			long itemid = wdgSpinnerBrowsers.getSelectedItemId();
+			mWdgSpinnerBrowsers = (Spinner) findViewById(R.id.SpinnerBrowsers);
+			long itemid = mWdgSpinnerBrowsers.getSelectedItemId();
 			String[] app = {
-				SUITABLEAPPS.get((int)itemid).get("packageName"),
-				SUITABLEAPPS.get((int)itemid).get("activityInfo")
+				mSuitableApps.get((int)itemid).get("packageName"),
+				mSuitableApps.get((int)itemid).get("activityInfo")
 			};
 			startBrowserApp("",app[0], app[1]);
 			
-		} else if (v == wdgConvertBtn) {
+		} else if (v == mWdgConvertBtn) {
 			//Log.d(TAG, "click:convert");
 			//
-			wdgSpinnerBrowsers = (Spinner) findViewById(R.id.SpinnerBrowsers);
-			long itemid = wdgSpinnerBrowsers.getSelectedItemId();
+			mWdgSpinnerBrowsers = (Spinner) findViewById(R.id.SpinnerBrowsers);
+			long itemid = mWdgSpinnerBrowsers.getSelectedItemId();
 			String[] app = {
-				SUITABLEAPPS.get((int)itemid).get("packageName"),
-				SUITABLEAPPS.get((int)itemid).get("activityInfo")
+				mSuitableApps.get((int)itemid).get("packageName"),
+				mSuitableApps.get((int)itemid).get("activityInfo")
 			};
 			//
-			wdgSpinnerConverters = (Spinner) findViewById(R.id.SpinnerConverters);
-			long cnvkey = wdgSpinnerConverters.getSelectedItemId();
+			mWdgSpinnerConverters = (Spinner) findViewById(R.id.SpinnerConverters);
+			long cnvkey = mWdgSpinnerConverters.getSelectedItemId();
 			String cnv = 
-				CONVERTERS.get((int)cnvkey).get("url")
+				mConverters.get((int)cnvkey).get("url")
 			;
 			Log.d(TAG,"onClick:wdgSpnCnv.getSelectedItemId-key/url:"+cnvkey+" / "+cnv);
 			startBrowserApp(cnv,app[0], app[1]);
 			
-		} else if (v == wdgSettingBtn) {
+		} else if (v == mWdgSettingBtn) {
 			startConverterlistActivity();
 			
-		} else if (v == wdgHistoryBtn) {
+		} else if (v == mWdgHistoryBtn) {
 			startHistoryActivity();
 			
 		}
@@ -245,15 +254,15 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		wdgSpinnerBrowsers = (Spinner) findViewById(R.id.SpinnerBrowsers);
-		wdgSpinnerBrowsers.setAdapter(adapter);
+		mWdgSpinnerBrowsers = (Spinner) findViewById(R.id.SpinnerBrowsers);
+		mWdgSpinnerBrowsers.setAdapter(adapter);
 		// アイテムを追加します
-		SUITABLEAPPS = getSuitableActivities();
-		for (int i = 0; i < SUITABLEAPPS.size();i++) {
-			adapter.add(SUITABLEAPPS.get(i).get("label"));
+		mSuitableApps = getSuitableActivities();
+		for (int i = 0; i < mSuitableApps.size();i++) {
+			adapter.add(mSuitableApps.get(i).get("label"));
 		}
 		// スピナーのアイテムが選択された時に呼び出されるコールバックを登録します
-		wdgSpinnerBrowsers
+		mWdgSpinnerBrowsers
 			.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 				public void onItemSelected(AdapterView<?> parent,
 						View view, int position, long id) {
@@ -268,7 +277,7 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 			});
 		
 		//スピナー表示時タイトル
-		wdgSpinnerBrowsers.setPrompt(
+		mWdgSpinnerBrowsers.setPrompt(
 				(CharSequence)getString(R.string.spinnerPrompt_browser)
 				);
 		
@@ -302,14 +311,14 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 		//listに対し、lastBrowserに等しいpackageNameを持っている要素を先頭に持ってくる
 		for (int i = 0; i < list_src.size(); i++) {
 			info = list_src.get(i);
-			if(lastBrowser.equals((String) info.activityInfo.applicationInfo.packageName)){
+			if(mLastBrowser.equals((String) info.activityInfo.applicationInfo.packageName)){
 				list.add(list_src.get(i));
 			}
 		}
 		//それ以外を後から追加する
 		for (int i = 0; i < list_src.size(); i++) {
 			info = list_src.get(i);
-			if(!lastBrowser.equals((String) info.activityInfo.applicationInfo.packageName)){
+			if(!mLastBrowser.equals((String) info.activityInfo.applicationInfo.packageName)){
 				list.add(list_src.get(i));
 			}
 		}
@@ -345,11 +354,11 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		wdgSpinnerConverters = (Spinner) findViewById(R.id.SpinnerConverters);
-		wdgSpinnerConverters.setAdapter(adapter);
+		mWdgSpinnerConverters = (Spinner) findViewById(R.id.SpinnerConverters);
+		mWdgSpinnerConverters.setAdapter(adapter);
 		// アイテムを追加します
-		CONVERTERS = new ArrayList<HashMap<String, String>>();
-		Cursor c = mDbHelper.fetchAllItems();
+		mConverters = new ArrayList<HashMap<String, String>>();
+		Cursor c = mDbHelperConverter.fetchAllItems();
 		startManagingCursor(c);
 		c.moveToFirst();
 		for (int i = 0; i < c.getCount(); i++) {
@@ -359,19 +368,19 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 			HashMap<String,String> hm = new HashMap<String,String>();
 			hm.put("title",c.getString(1));
 			hm.put("url",c.getString(2));
-			CONVERTERS.add(hm);
+			mConverters.add(hm);
 			Log.d(TAG, "bcs:"+i+":" + c.getString(1) + "/" +c.getString(2));
 			c.moveToNext();
 		}
 
 		// スピナーのアイテムが選択された時に呼び出されるコールバックを登録します
-		wdgSpinnerConverters
+		mWdgSpinnerConverters
 			.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 				public void onItemSelected(AdapterView<?> parent,
 				View view, int position, long id) {
 					Spinner spinner = (Spinner) parent;
 					// 選択されたアイテムを取得します
-					Cursor c = mDbHelper.fetchItemByTitle((String) spinner
+					Cursor c = mDbHelperConverter.fetchItemByTitle((String) spinner
 							.getSelectedItem());
 					startManagingCursor(c);
 					Log.d(TAG, "bcs:ois:sel:" + c.getString(2));
@@ -382,7 +391,7 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 			});
 		
 		//スピナー表示時タイトル
-		wdgSpinnerConverters.setPrompt(
+		mWdgSpinnerConverters.setPrompt(
 			(CharSequence)getString(R.string.spinnerPrompt_converter)
 		);
 		
@@ -395,8 +404,7 @@ public class BrowserhookActivity extends Activity implements OnClickListener  {
 		Log.d(TAG, "sba:cv:" + cv+"/pkg:"+pkg+"/act:"+act);
 
 		//save browser selection
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-	    SharedPreferences.Editor editor = settings.edit();
+	    SharedPreferences.Editor editor = mSharedPrefs.edit();
 	    editor.putString("lastBrowser", pkg);
 		//Log.d(TAG, "sba:shpref:lb:" + pkg);
 	    // Don't forget to commit your edits!!!

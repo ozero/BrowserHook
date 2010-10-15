@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,12 +25,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View.OnClickListener;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
-public class ConverterlistActivity extends ListActivity {
+public class ConverterlistActivity extends ListActivity implements OnClickListener {
 	static Uri URI = null;
 	static Boolean IS_STANDALONE = true;
 	static String TAG = "bhcl";
@@ -41,6 +45,8 @@ public class ConverterlistActivity extends ListActivity {
 	private static final int INITIALIZE_ID = R.id.menu_initialize;
 	private static final int DELETE_ID = 0;
 	private Converter mDbHelper;
+	private SharedPreferences mSharedPrefs;
+	private CheckBox mWdgDisablehistoryChk;
 	
 	// //////////////////////////////////////////////////////////////////////
 	// GUI event dispatcher: activity
@@ -58,8 +64,14 @@ public class ConverterlistActivity extends ListActivity {
 		//bind widget with method
 //		wdgDirectBtn = (Button) findViewById(R.id.ButtonDirect);
 //		wdgDirectBtn.setOnClickListener(this);
+		mWdgDisablehistoryChk = (CheckBox) findViewById(R.id.disableHistory_chk);
+		mWdgDisablehistoryChk.setOnClickListener(this);
         
 		//build gui
+		mSharedPrefs = getSharedPreferences(BrowserhookActivity.PREFS_NAME, 0);
+		final Boolean historyAvailable = mSharedPrefs.getBoolean(
+				BrowserhookActivity.sPrefKeyDisableHistory, false);  
+		mWdgDisablehistoryChk.setChecked(historyAvailable);
 		buildListView();
 		registerForContextMenu(getListView());
 		return;
@@ -77,6 +89,13 @@ public class ConverterlistActivity extends ListActivity {
 	protected void onDestroy(int requestCode, int resultCode,
 			Intent intent) {
 		super.onDestroy();
+		
+		Editor prefeditor = mSharedPrefs.edit();
+		prefeditor.putBoolean(
+				BrowserhookActivity.sPrefKeyDisableHistory, 
+				mWdgDisablehistoryChk.isChecked());
+		prefeditor.commit();
+		
 		mDbHelper.close();
 	}
 
@@ -117,7 +136,24 @@ public class ConverterlistActivity extends ListActivity {
 		
 	// ボタンクリックのディスパッチ
 	public void onClick(View v) {
-		return;
+		Integer mWidgetId = v.getId();
+
+		switch (mWidgetId) {
+
+		// 履歴取得の停止
+		case R.id.disableHistory_chk:
+			mSharedPrefs = getSharedPreferences(BrowserhookActivity.PREFS_NAME,
+					MODE_WORLD_WRITEABLE);
+			Editor prefeditor = mSharedPrefs.edit();
+			prefeditor.putBoolean(
+					BrowserhookActivity.sPrefKeyDisableHistory, 
+					mWdgDisablehistoryChk.isChecked());
+			prefeditor.commit();
+			break;
+
+		default:
+
+		}
 	}
 
 	// メニューがクリックされた際
